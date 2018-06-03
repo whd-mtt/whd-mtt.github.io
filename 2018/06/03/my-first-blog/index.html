@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="whd-mtt&#39;s blogs">
 <meta property="og:description" content="附加一段文章摘要，字数最好在140字以内，会出现在meta的description里面">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-03T11:30:50.796Z">
+<meta property="og:updated_time" content="2018-06-03T15:47:43.596Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="my-first-blog">
 <meta name="twitter:description" content="附加一段文章摘要，字数最好在140字以内，会出现在meta的description里面">
@@ -178,6 +178,7 @@
         <h1 id="Hibernate中get-和load-的区别"><a href="#Hibernate中get-和load-的区别" class="headerlink" title="Hibernate中get()和load()的区别"></a>Hibernate中get()和load()的区别</h1><blockquote>
 <p>最近面试中遇到了关于hibernate中get()和load()两个方法的区别,我在论坛看到了各种论述，我总结了他们的观点以及自己的理解来简单说明下，如果有哪里不对的地方欢迎指正。</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h2><p>首先要清楚一点的是get()和load()方法都是hibernate中session中获取实体对象两个方法,如果是get()方法加载实体对象，但是如果加载对象失败的话，那么结果会返回为null，而通过load()方式加载实体对象，加载不到的数据话便会抛出ObjectNotFoundException。</p>
 <hr>
 <h2 id="执行机制"><a href="#执行机制" class="headerlink" title="执行机制"></a>执行机制</h2><h3 id="get-方法"><a href="#get-方法" class="headerlink" title="get( )方法"></a>get( )方法</h3><p>对于get( )方法，hibernate会确认一下该id对应的数据是否存在，首先会在session一级缓存中查找，如果在session缓存中找到了该id对应的对象；</p>
