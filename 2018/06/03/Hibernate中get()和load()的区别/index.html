@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="whd-mtt.github.io">
-  <title>Archives: 2018 | whd-mtt&#39;s blogs</title>
+  <title>Hibernate中get()和load()的区别 | whd-mtt&#39;s blogs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="whd-mtt&#39;s blogs">
-<meta property="og:url" content="whd-mtt.github.io/archives/2018/index.html">
+  <meta name="description" content="附加一段文章摘要，字数最好在140字以内，会出现在meta的description里面">
+<meta name="keywords" content="hibernate,java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hibernate中get()和load()的区别">
+<meta property="og:url" content="whd-mtt.github.io/2018/06/03/Hibernate中get()和load()的区别/index.html">
 <meta property="og:site_name" content="whd-mtt&#39;s blogs">
+<meta property="og:description" content="附加一段文章摘要，字数最好在140字以内，会出现在meta的description里面">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-05T16:31:43.126Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="whd-mtt&#39;s blogs">
+<meta name="twitter:title" content="Hibernate中get()和load()的区别">
+<meta name="twitter:description" content="附加一段文章摘要，字数最好在140字以内，会出现在meta的description里面">
   
     <link rel="alternative" href="/atom.xml" title="whd-mtt&#39;s blogs" type="application/atom+xml">
   
@@ -150,89 +155,86 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Hibernate中get()和load()的区别" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/03/Bootstrap-table分页删除尾页数据后刷新无数据问题/" class="archive-article-date">
-  	<time datetime="2018-06-03T11:25:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/03/Bootstrap-table分页删除尾页数据后刷新无数据问题/">Bootstrap-table分页删除尾页数据后刷新无数据问题</a>
+    <h1 class="article-title" itemprop="name">
+      Hibernate中get()和load()的区别
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">bootstrap-table</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/前端//" class="article-tag-list-link color3">前端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/03/Hibernate中get()和load()的区别/" class="archive-article-date">
+        
+        <a href="/2018/06/03/Hibernate中get()和load()的区别/" class="archive-article-date">
   	<time datetime="2018-06-03T11:25:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-03</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/03/Hibernate中get()和load()的区别/">Hibernate中get()和load()的区别</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>最近面试中遇到了关于hibernate中get()和load()两个方法的区别,我在论坛看到了各种论述，我总结了他们的观点以及自己的理解来简单说明下，如果有哪里不对的地方欢迎指正。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h2><p>首先要清楚一点的是get()和load()方法都是hibernate中session中获取实体对象两个方法,如果是get()方法加载实体对象，但是如果加载对象失败的话，那么结果会返回为null，而通过load()方式加载实体对象，加载不到的数据话便会抛出ObjectNotFoundException。</p>
+<hr>
+<h2 id="执行机制"><a href="#执行机制" class="headerlink" title="执行机制"></a>执行机制</h2><h3 id="get-方法"><a href="#get-方法" class="headerlink" title="get( )方法"></a>get( )方法</h3><p>对于get( )方法，hibernate会确认一下该id对应的数据是否存在，首先会在session一级缓存中查找，如果在session缓存中找到了该id对应的对象；</p>
+<ul>
+<li><p>如果刚好该对象前面是被代理过的，如被load方法使用过，或者被其他关联对象延迟加载过，那么返回的还是原先的代理对象，而不是实体类对象;</p>
+</li>
+<li><p>如果该代理对象还没有加载实体数据（就是id以外的其他属性数据），那么它会查询二级缓存或者数据库来加载数据，但是返回的还是代理对象，只不过已经加载了实体数据;</p>
+</li>
+<li>如果该id对应的对象并且不是被延迟加载的代理对象，或者在session缓存中没有找到该对象，则查找二级缓存</li>
+</ul>
+<p>如果二级缓存中没有的话，就会直接发送sql语句去数据库查询数据返回实体对象，如果数据库中也没有就返回null。</p>
+<h3 id="load-方法"><a href="#load-方法" class="headerlink" title="load()方法"></a>load()方法</h3><p>对于load方法加载实体对象的时，会根据*.hbm.xml映射文件上类级别的lazy属性的配置(默认为true)选择加载方式；</p>
+<ul>
+<li><p>若为true,则首先在Session缓存中查找，看看该id对应的对象是否存在，不存在则延迟加载，返回实体的代理类对象(该代理类为实体类的子类，由CGLIB动态生成)，这个代理对象只保存了实体对象的id值，当我们使用该对象的其他属性值时就会查找二级缓存，二级缓存没有就发出sql语句去数据库查找数据，如果数据库仍没发现符合条件的记录，则会抛出一个ObjectNotFoundException。这也是我们时常所说的<strong>延迟加载 </strong></p>
+</li>
+<li><p>若为false，就跟get( )方法加载顺序一样，只是最终若没发现符合条件的记录，则会抛出一个ObjectNotFoundException;</p>
+</li>
+</ul>
+<hr>
+<h2 id="使用get-和load-时的注意事项"><a href="#使用get-和load-时的注意事项" class="headerlink" title="使用get( )和load( )时的注意事项"></a>使用get( )和load( )时的注意事项</h2><p>当我们了解了load和get的加载机制以后，在以后使用过程后需要注意一些问题：</p>
+<ul>
+<li><p>如果使用get方式来加载对象，当我们试图得到一个id不存在的对象时，此时会报NullPointException,这是因为通过get( )方式加载实体对象时候，我们会去数据库中查询出该对象，但是这个id值不存在，所以此时实体对象是null，也就会报NullPointException。</p>
+</li>
+<li><p>如果使用load方式来加载对象，当我们试图得到一个id不存在的实体对象时，此时会报ObjectNotFoundException，为什么使用load的方式和get的方式来得到一个不存在的对象报的异常不同呢？？其原因还是因为load的延迟加载机制，使用load()时，此时的实体对象是一个代理对象，仅仅保存了当前的这个id值，当我们试图得到该对象的其他属性时，这个属性其实是为空，所以就会报ObjectNotFoundException</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总之对于get( )和load( )的根本区别，一句话，hibernate对于load方法认为该数据在数据库中一定存在，可以放心的使用代理来延迟加载，如果在使用过程中发现了问题，只能抛异常；而对于get( )方法，hibernate一定要获取到真实的数据，否则返回null。</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -248,7 +250,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -261,74 +263,113 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http:whd-mtt.github.io/2018/06/03/Hibernate中get()和load()的区别/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/03/hello-world/" class="archive-article-date">
-  	<time datetime="2018-06-03T11:25:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-03</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/06/03/Bootstrap-table分页删除尾页数据后刷新无数据问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Bootstrap-table分页删除尾页数据后刷新无数据问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/03/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/03/hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tag1</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tag2</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tag3</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/默认分类//" class="article-tag-list-link color5">默认分类</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -351,8 +392,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
