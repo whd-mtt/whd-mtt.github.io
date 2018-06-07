@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="whd-mtt.github.io">
-  <title>Bootstrap-table分页删除尾页数据后刷新无数据问题 | whd-mtt&#39;s blogs</title>
+  <title>ubuntu16.04.3安装RabbitMQ服务器 | whd-mtt&#39;s blogs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="当我们使用bootstrap-table做表格分页展示的时候，当我们删除最后一页数据的时候，刷新数据发现无数据展示, 针对这种问题，我们有三种解决方式；">
-<meta name="keywords" content="bootstrap-table,js">
+  <meta name="description" content="消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构，关于消息队列，市面上有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ这样一些消息队列，但是目前大家用得最多的就是Kafka，RabbitMQ，ActiveMQ，但是我们常用的SpringBoot不支持ActiveMQ（支持Ka">
+<meta name="keywords" content="RabbitMQ,linux,消息队列">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bootstrap-table分页删除尾页数据后刷新无数据问题">
+<meta property="og:title" content="ubuntu16.04.3安装RabbitMQ服务器">
 <meta property="og:url" content="whd-mtt.github.io/2018/06/03/Bootstrap-table分页删除尾页数据后刷新无数据问题/index.html">
 <meta property="og:site_name" content="whd-mtt&#39;s blogs">
-<meta property="og:description" content="当我们使用bootstrap-table做表格分页展示的时候，当我们删除最后一页数据的时候，刷新数据发现无数据展示, 针对这种问题，我们有三种解决方式；">
+<meta property="og:description" content="消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构，关于消息队列，市面上有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ这样一些消息队列，但是目前大家用得最多的就是Kafka，RabbitMQ，ActiveMQ，但是我们常用的SpringBoot不支持ActiveMQ（支持Ka">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-05T16:34:55.471Z">
+<meta property="og:updated_time" content="2018-06-07T16:23:12.597Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bootstrap-table分页删除尾页数据后刷新无数据问题">
-<meta name="twitter:description" content="当我们使用bootstrap-table做表格分页展示的时候，当我们删除最后一页数据的时候，刷新数据发现无数据展示, 针对这种问题，我们有三种解决方式；">
+<meta name="twitter:title" content="ubuntu16.04.3安装RabbitMQ服务器">
+<meta name="twitter:description" content="消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构，关于消息队列，市面上有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ这样一些消息队列，但是目前大家用得最多的就是Kafka，RabbitMQ，ActiveMQ，但是我们常用的SpringBoot不支持ActiveMQ（支持Ka">
   
     <link rel="alternative" href="/atom.xml" title="whd-mtt&#39;s blogs" type="application/atom+xml">
   
@@ -162,7 +162,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Bootstrap-table分页删除尾页数据后刷新无数据问题
+      ubuntu16.04.3安装RabbitMQ服务器
     </h1>
   
 
@@ -175,14 +175,113 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>当我们使用bootstrap-table做表格分页展示的时候，当我们删除最后一页数据的时候，刷新数据发现无数据展示, 针对这种问题，我们有三种解决方式；</p>
+        <p>消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构，关于消息队列，市面上有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ这样一些消息队列，但是目前大家用得最多的就是Kafka，<strong>RabbitMQ</strong>，ActiveMQ，但是我们常用的<strong>SpringBoot</strong>不支持ActiveMQ（支持Kafka，RabbitMQ），所以先动手实现在linux上安装RabbitMQ服务器。<br><a id="more"></a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><blockquote>
+<p>为了顺利，建议大家以官方文档，根据这个链接<a href="http://www.rabbitmq.com/install-debian.html" target="_blank" rel="noopener">http://www.rabbitmq.com/install-debian.html</a>实现安装;</p>
 </blockquote>
-<a id="more"></a>
-<h2 id="问题重现"><a href="#问题重现" class="headerlink" title="问题重现"></a>问题重现</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
+<h3 id="添加新的源"><a href="#添加新的源" class="headerlink" title="添加新的源"></a>添加新的源</h3><ul>
+<li>添加新的源 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">'deb http://www.rabbitmq.com/debian/ testing main'</span> | sudo tee /etc/apt/sources.list.d/rabbitmq.list</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="下载公钥"><a href="#下载公钥" class="headerlink" title="下载公钥"></a>下载公钥</h3><ul>
+<li>下载公钥，防止后面的安装出现安全警告（可选，不执行此步骤也不糊影响安装）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="更新和安装"><a href="#更新和安装" class="headerlink" title="更新和安装"></a>更新和安装</h3><ul>
+<li><p>更新</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install rabbitmq-server</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这时候我们可以通过ps -ef|grep rabbit命令来看哈情况：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ps -ef|grep rabbit</span><br></pre></td></tr></table></figure></p>
+<p>使用上述命令边可以查看到如下信息：</p>
+<pre><code>rabbitmq  1609     1  0 21:46 ?        00:00:02 /usr/lib/erlang/erts-7.3/bin/beam -W w -A 64 -P 1048576 -t 5000000 -stbt db -zdbbl 128000 -K true -- -root /usr/lib/erlang -progname erl -- -home /var/lib/rabbitmq -- -pa /usr/lib/rabbitmq/lib/rabbitmq_server-3.6.15/ebin -noshell -noinput -s rabbi boot -sname rabbit@iZwz9ajwdnsg4s5368tvcpZ -boot start_sasl -kernel inet_default_connect_options [{nodelay,true}] -sasl errlog_type error -sasl sasl_error_logger false -rabbit error_logger {file,&quot;/var/log/rabbitmq/rabbit@iZwz9ajwdnsg4s5368tvcpZ.log&quot;} -rabbit sasl_error_logger {file,&quot;/var/log/rabbitmq/rabbit@iZwz9ajwdnsg4s5368tvcpZ-sasl.log&quot;} -rabbit enabled_plugins_file &quot;/etc/rabbitmq/enabled_plugins&quot; -rabbit plugins_dir &quot;/usr/lib/rabbitmq/plugins:/usr/lib/rabbitmq/lib/rabbitmq_server-3.6.15/plugins&quot; -rabbit plugins_expand_dir &quot;/var/lib/rabbitmq/mnesia/rabbit@iZwz9ajwdnsg4s5368tvcpZ-plugins-expand&quot; -os_mon start_cpu_sup false -os_mon start_disksup false -os_mon start_memsup false -mnesia dir &quot;/var/lib/rabbitmq/mnesia/rabbit@iZwz9ajwdnsg4s5368tvcpZ&quot; -kernel inet_dist_listen_min 25672 -kernel inet_dist_listen_max 25672
+rabbitmq  1703     1  0 21:46 ?        00:00:00 /usr/lib/erlang/erts-7.3/bin/epmd -daemon
+rabbitmq  1811  1609  0 21:46 ?        00:00:00 inet_gethost 4
+rabbitmq  1812  1811  0 21:46 ?        00:00:00 inet_gethost 4
+root      2059   394  0 22:02 pts/1    00:00:00 grep --color=auto rabbit
+</code></pre><blockquote>
+<p>注意：最新版本为了安全，默认只允许本地可访问，也就是说我们远程无法访问。还需要进行配置才行。</p>
+</blockquote>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>我这里使用的是ubuntu的系统，登录远程服务器，cd /etc/rabbitmq/下，</p>
+<ul>
+<li>新建rabbitmq.config文件<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ touch rabbitmq.config</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如果不知道如何写配置文件，还是参照官网<a href="http://www.rabbitmq.com/access-control.html" target="_blank" rel="noopener">http://www.rabbitmq.com/access-control.html</a>完成自己的配置文件<br>配置文件的内容为：</p>
+<pre><code>[{rabbit, [{loopback_users, []}]}].
+</code></pre><p>如果我们想有一个web端可视化操作界面，我们还需要配置插件,先进入到安全目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/lib/rabbitmq/bin/ </span><br><span class="line">$ ./rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br></pre></td></tr></table></figure></p>
+<p>最后别忘记了重启你的rabbitmq<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ invoke-rc.d rabbitmq-server restart</span><br></pre></td></tr></table></figure></p>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>重新你启动后：输入./rabbitmqctl status查看启动状态：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./rabbitmqctl status</span><br></pre></td></tr></table></figure></p>
+<p>看到如下信息表示rabbitmq启动成功：</p>
+<pre><code>Status of node rabbit@iZwz9ajwdnsg4s5368tvcpZ
+[{pid,1616},
+ {running_applications,
+     [{rabbitmq_management,&quot;RabbitMQ Management Console&quot;,&quot;3.6.15&quot;},
+      {rabbitmq_web_dispatch,&quot;RabbitMQ Web Dispatcher&quot;,&quot;3.6.15&quot;},
+      {rabbitmq_management_agent,&quot;RabbitMQ Management Agent&quot;,&quot;3.6.15&quot;},
+      {rabbit,&quot;RabbitMQ&quot;,&quot;3.6.15&quot;},
+      {cowboy,&quot;Small, fast, modular HTTP server.&quot;,&quot;1.0.4&quot;},
+      {ranch,&quot;Socket acceptor pool for TCP protocols.&quot;,&quot;1.3.2&quot;},
+      {ssl,&quot;Erlang/OTP SSL application&quot;,&quot;7.3&quot;},
+      {public_key,&quot;Public key infrastructure&quot;,&quot;1.1.1&quot;},
+      {os_mon,&quot;CPO  CXC 138 46&quot;,&quot;2.4&quot;},
+      {amqp_client,&quot;RabbitMQ AMQP Client&quot;,&quot;3.6.15&quot;},
+      {rabbit_common,
+          &quot;Modules shared by rabbitmq-server and rabbitmq-erlang-client&quot;,
+          &quot;3.6.15&quot;},
+      {compiler,&quot;ERTS  CXC 138 10&quot;,&quot;6.0.3&quot;},
+      {inets,&quot;INETS  CXC 138 49&quot;,&quot;6.2&quot;},
+      {cowlib,&quot;Support library for manipulating Web protocols.&quot;,&quot;1.0.2&quot;},
+      {crypto,&quot;CRYPTO&quot;,&quot;3.6.3&quot;},
+      {asn1,&quot;The Erlang ASN1 compiler version 4.0.2&quot;,&quot;4.0.2&quot;},
+      {recon,&quot;Diagnostic tools for production use&quot;,&quot;2.3.2&quot;},
+      {mnesia,&quot;MNESIA  CXC 138 12&quot;,&quot;4.13.3&quot;},
+      {syntax_tools,&quot;Syntax tools&quot;,&quot;1.7&quot;},
+      {xmerl,&quot;XML parser&quot;,&quot;1.3.10&quot;},
+      {sasl,&quot;SASL  CXC 138 11&quot;,&quot;2.7&quot;},
+      {stdlib,&quot;ERTS  CXC 138 10&quot;,&quot;2.8&quot;},
+      {kernel,&quot;ERTS  CXC 138 10&quot;,&quot;4.2&quot;}]},
+ {os,{unix,linux}},
+ {erlang_version,
+     &quot;Erlang/OTP 18 [erts-7.3] [source] [64-bit] [async-threads:64] [kernel-poll:true]\n&quot;},
+ {memory,
+     [{connection_readers,0},
+      {connection_writers,0},
+      {connection_channels,0},
+      {connection_other,2592},
+      {queue_procs,2592},
+      {queue_slave_procs,0},
+      {plugins,719912},
+      {other_proc,21169952},
+      {metrics,51816},
+      {mgmt_db,145272},
+      {mnesia,58224},
+      {other_ets,2325224},
+      {binary,59168},
+      {msg_index,40704},
+      {code,27779661},
+      {atom,1000601},
+      {other_system,4364826},
+      {allocated_unused,16974432},
+      {reserved_unallocated,0},
+      {total,72642560}]},
+ {alarms,[]},
+ {listeners,[{clustering,25672,&quot;::&quot;},{amqp,5672,&quot;::&quot;},{http,15672,&quot;::&quot;}]},
+ {vm_memory_calculation_strategy,rss},
+ {vm_memory_high_watermark,0.4},
+ {vm_memory_limit,838947635},
+ {disk_free_limit,50000000},
+ {disk_free,36661555200},
+ {file_descriptors,
+     [{total_limit,924},{total_used,2},{sockets_limit,829},{sockets_used,0}]},
+ {processes,[{limit,1048576},{used,321}]},
+ {run_queue,0},
+ {uptime,602},
+ {kernel,{net_ticktime,60}}]
+</code></pre>
       
 
       
@@ -216,11 +315,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">bootstrap-table</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RabbitMQ</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">linux</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">消息队列</a>
         		</li>
       		
 		</ul>
@@ -232,7 +335,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/前端//" class="article-tag-list-link color3">前端</a>
+        			<a href="/categories/中间件//" class="article-tag-list-link color4">中间件</a>
         		</li>
       		
 		</ul>
@@ -302,8 +405,8 @@
 <nav id="article-nav">
   
   
-    <a href="/2018/06/03/Hibernate中get()和load()的区别/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hibernate中get()和load()的区别</div>
+    <a href="/2018/06/03/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -429,11 +532,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">bootstrap-table</a>
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">博客</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -445,15 +560,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tag1</a>
+                <a href="javascript:void(0)" class="js-tag color1">bootstrap-table</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tag2</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tag3</a>
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
             
             <div class="clearfix"></div>
