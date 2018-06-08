@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="whd-mtt&#39;s blogs">
 <meta property="og:description" content="消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构，关于消息队列，市面上有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ这样一些消息队列，但是目前大家用得最多的就是Kafka，RabbitMQ，ActiveMQ，但是我们常用的SpringBoot不支持ActiveMQ（支持Ka">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-07T16:23:12.597Z">
+<meta property="og:updated_time" content="2018-06-08T16:14:50.262Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu16.04.3安装RabbitMQ服务器">
 <meta name="twitter:description" content="消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构，关于消息队列，市面上有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ这样一些消息队列，但是目前大家用得最多的就是Kafka，RabbitMQ，ActiveMQ，但是我们常用的SpringBoot不支持ActiveMQ（支持Ka">
@@ -184,7 +184,7 @@
 </li>
 </ul>
 <h3 id="下载公钥"><a href="#下载公钥" class="headerlink" title="下载公钥"></a>下载公钥</h3><ul>
-<li>下载公钥，防止后面的安装出现安全警告（可选，不执行此步骤也不糊影响安装）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+<li>下载公钥，防止后面的安装出现安全警告（可选，不执行此步骤也不会影响安装）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="更新和安装"><a href="#更新和安装" class="headerlink" title="更新和安装"></a>更新和安装</h3><ul>
@@ -281,6 +281,15 @@ root      2059   394  0 22:02 pts/1    00:00:00 grep --color=auto rabbit
  {run_queue,0},
  {uptime,602},
  {kernel,{net_ticktime,60}}]
+</code></pre><h2 id="后台管理"><a href="#后台管理" class="headerlink" title="后台管理"></a>后台管理</h2><p>在浏览器段查看rabbit的后台管理界面：</p>
+<ul>
+<li><p>首先，在自己的系统防火墙的端口号，后台管理界面的访问端口是15672,因此需要在执行以下命令开放该端口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ firewall-cmd --add-port=15672/tcp --zone=public --permanent</span><br><span class="line"></span><br><span class="line">$ firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>由于我的服务器是阿里云的ubuntu，因此需要登陆阿里云，进入你的管理控制台安全组入口配置规则，开放端口，在浏览器输入以下地址，便可访问后台管理界面。</p>
+</li>
+</ul>
+<pre><code>你的服务器公网地址:15672
 </code></pre>
       
 
