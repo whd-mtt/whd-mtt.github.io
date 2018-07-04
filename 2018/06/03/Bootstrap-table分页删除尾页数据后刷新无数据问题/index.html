@@ -16,10 +16,12 @@
 <meta property="og:site_name" content="whd-mtt&#39;s blogs">
 <meta property="og:description" content="消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构，关于消息队列，市面上有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ这样一些消息队列，但是目前大家用得最多的就是Kafka，RabbitMQ，ActiveMQ，但是我们常用的SpringBoot不支持ActiveMQ（支持Ka">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-08T16:14:50.262Z">
+<meta property="og:image" content="/img/rabbitmq.png">
+<meta property="og:updated_time" content="2018-07-04T14:34:13.328Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu16.04.3安装RabbitMQ服务器">
 <meta name="twitter:description" content="消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构，关于消息队列，市面上有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ这样一些消息队列，但是目前大家用得最多的就是Kafka，RabbitMQ，ActiveMQ，但是我们常用的SpringBoot不支持ActiveMQ（支持Ka">
+<meta name="twitter:image" content="/img/rabbitmq.png">
   
     <link rel="alternative" href="/atom.xml" title="whd-mtt&#39;s blogs" type="application/atom+xml">
   
@@ -287,10 +289,11 @@ root      2059   394  0 22:02 pts/1    00:00:00 grep --color=auto rabbit
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ firewall-cmd --add-port=15672/tcp --zone=public --permanent</span><br><span class="line"></span><br><span class="line">$ firewall-cmd --reload</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>由于我的服务器是阿里云的ubuntu，因此需要登陆阿里云，进入你的管理控制台安全组入口配置规则，开放端口，在浏览器输入以下地址，便可访问后台管理界面。</p>
+<pre><code>你的服务器公网地址:15672
+</code></pre><p>效果如下:<br><img src="/img/rabbitmq.png" alt=""></p>
 </li>
 </ul>
-<pre><code>你的服务器公网地址:15672
-</code></pre>
+
       
 
       
@@ -414,8 +417,8 @@ root      2059   394  0 22:02 pts/1    00:00:00 grep --color=auto rabbit
 <nav id="article-nav">
   
   
-    <a href="/2018/06/03/Hibernate中get()和load()的区别/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hibernate中get()和load()的区别</div>
+    <a href="/2018/06/03/Git右键没有Git-Bash-Here的解决办法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Git右键没有Git Bash Here的解决办法</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -550,6 +553,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">版本控制</a>
               </li>
              
               <li class="article-tag-list-item">
