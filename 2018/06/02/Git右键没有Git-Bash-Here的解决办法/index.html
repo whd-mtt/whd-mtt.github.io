@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="whd-mtt.github.io">
   <title>Git右键没有Git Bash Here的解决办法 | whd-mtt&#39;s blogs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="大家经常会遇到的一个问题，大家在安装git完成的时候，一般用鼠标邮件就可以看到Git Bash Here和Git Gui这两个选项，但是有时候g安装git后并没有两个选项">
+  <meta name="description" content="大家经常会遇到的一个问题，大家在安装git完成的时候，一般用鼠标右键就可以看到Git Bash Here和Git Gui这两个选项，但是有时候安装git后并没有两个选项，这里我们将要介绍如何配置Git Bash Here这个命令。">
 <meta name="keywords" content="git,版本控制">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git右键没有Git Bash Here的解决办法">
 <meta property="og:url" content="whd-mtt.github.io/2018/06/02/Git右键没有Git-Bash-Here的解决办法/index.html">
 <meta property="og:site_name" content="whd-mtt&#39;s blogs">
-<meta property="og:description" content="大家经常会遇到的一个问题，大家在安装git完成的时候，一般用鼠标邮件就可以看到Git Bash Here和Git Gui这两个选项，但是有时候g安装git后并没有两个选项">
+<meta property="og:description" content="大家经常会遇到的一个问题，大家在安装git完成的时候，一般用鼠标右键就可以看到Git Bash Here和Git Gui这两个选项，但是有时候安装git后并没有两个选项，这里我们将要介绍如何配置Git Bash Here这个命令。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-04T14:48:04.932Z">
+<meta property="og:updated_time" content="2018-07-06T14:03:16.274Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git右键没有Git Bash Here的解决办法">
-<meta name="twitter:description" content="大家经常会遇到的一个问题，大家在安装git完成的时候，一般用鼠标邮件就可以看到Git Bash Here和Git Gui这两个选项，但是有时候g安装git后并没有两个选项">
+<meta name="twitter:description" content="大家经常会遇到的一个问题，大家在安装git完成的时候，一般用鼠标右键就可以看到Git Bash Here和Git Gui这两个选项，但是有时候安装git后并没有两个选项，这里我们将要介绍如何配置Git Bash Here这个命令。">
   
     <link rel="alternative" href="/atom.xml" title="whd-mtt&#39;s blogs" type="application/atom+xml">
   
@@ -187,20 +187,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家经常会遇到的一个问题，大家在安装git完成的时候，一般用鼠标邮件就可以看到Git Bash Here和Git Gui这两个选项，但是有时候g安装git后并没有两个选项</p>
+        <p>大家经常会遇到的一个问题，大家在安装git完成的时候，一般用鼠标右键就可以看到Git Bash Here和Git Gui这两个选项，但是有时候安装git后并没有两个选项，这里我们将要介绍如何配置Git Bash Here这个命令。</p>
 <a id="more"></a>
-<ul>
-<li><p>（win按键+R打开运行小窗口）在“运行”中输入‘regedit’，打开注册表。</p>
-</li>
-<li><p>在注册表编辑器界面  HKEY_CLASSES_ROOT\Directory\Background\shell中进行设置，如果Background目录下没有shell文件夹就新建shell文件夹。</p>
-</li>
-<li><p>在shell目录下 新建项 Git Bash Here，此时点击鼠标右键菜单会出现“Git Bush Here”选项。</p>
-</li>
-<li><p>在 Git Bash Here  下新建Command项，随后修改Command项的默认值修改为 E:\git\git\Git\bin\bash.exe –login -i，注意：需要根据安装的Git真实目录进行配置。搞定此时你可以放心的使用Git Bush Here快捷方式了。</p>
-</li>
-<li><p>我们可以给右键 Git Bush Here 快捷方式添加一个 Icon，这样看起来就美观很多。在Git Bash Here 项下 新建字符串值 Icon 然后编辑Icon 值  E:\git\git\Git\mingw64\share\git\git-for-windows.ico ，注意：需要根据安装的Git真实目录进行配置</p>
-</li>
-</ul>
+<h3 id="出现原因"><a href="#出现原因" class="headerlink" title="出现原因"></a>出现原因</h3><p>对于各位右键看不到这个命令，出现这个问题的原因，主要是我在安装git的时候，安装路径没有在C盘下，安装在C盘下系统就会自动帮你创建这个命令，再右键就能看到这两个命令，如果你的git安装在其他盘符下，那么就需要你自己完成手动配置。</p>
+<h4 id="1-打开注册表"><a href="#1-打开注册表" class="headerlink" title="1.打开注册表"></a>1.打开注册表</h4><p>（win按键+R打开运行小窗口）在“运行”中输入‘regedit’，打开注册表。</p>
+<h4 id="2-创建shell文件夹"><a href="#2-创建shell文件夹" class="headerlink" title="2.创建shell文件夹"></a>2.创建shell文件夹</h4><p>在注册表编辑器界面  HKEY_CLASSES_ROOT\Directory\Background\shell中进行设置，如果Background目录下没有shell文件夹就新建shell文件夹。</p>
+<h4 id="3-新建项"><a href="#3-新建项" class="headerlink" title="3.新建项"></a>3.新建项</h4><p>在shell目录下 新建项 Git Bash Here，此时点击鼠标右键菜单会出现“Git Bush Here”选项，但是你继续点击她，还不会打开git命令块。</p>
+<h4 id="4-添加图标"><a href="#4-添加图标" class="headerlink" title="4.添加图标"></a>4.添加图标</h4><p>到此时你会发现右键没有图标，我们可以给右键 Git Bush Here 快捷方式添加一个 Icon，这样看起来就美观很多，在Git Bash Here 项下 新建字符串值 Icon 然后编辑Icon 值 ，E:\Git\mingw64\share\git\git-for-windows.ico ，注意：需要根据安装的Git真实目录进行配置。</p>
+<h4 id="5-新建Command项"><a href="#5-新建Command项" class="headerlink" title="5.新建Command项"></a>5.新建Command项</h4><p>在 Git Bash Here  下新建Command项，随后修改Command项的默认值修改为 E:\Git\bin\bash.exe –login -i，注意：需要根据安装的Git真实目录进行配置。 此时你可以放心的使用Git Bush Here快捷方式了。</p>
 
       
 
@@ -320,11 +314,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/06/03/ubuntu16.04.3安装rabbitmq服务器/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/06/03/IntelliJ-idea的快捷键的使用/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Bootstrap-table分页删除尾页数据后刷新无数据问题
+          IntelliJ IDEA的使用
         
       </div>
     </a>
@@ -478,6 +472,38 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">版本控制</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">博客</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hibernate</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">bootstrap-table</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
@@ -490,43 +516,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">版本控制</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hibernate</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">IntelliJ idea</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">jetbrains</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">博客</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">bootstrap-table</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
