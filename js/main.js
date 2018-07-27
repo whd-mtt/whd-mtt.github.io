@@ -144,7 +144,7 @@ function deepCopy(c, p) {
 }
 /**
  * 网站js
- * @author Jelon
+ * @author whd-mtt
  * @type {{init, toggleMenu}}
  */
 var JELON = window.JELON || {};
