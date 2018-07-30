@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8" >
     <meta name="baidu-site-verification" content="dIcXMeY8Ya" />
     
-    <title>`hibernate`标签下的文章 | whd-mtt&#39;s blogs</title>
+    <title>为什么String类是不可变的 | whd-mtt&#39;s blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" >
     <meta name="keywords" content="whd-mtt, javaweb, 大数据," >
     <meta name="description" content="whd-mtt个人前端小站" >
@@ -56,19 +56,19 @@
         <div class="dropnav icon-paragraph-justify" id="JELON__btnDropNav"></div>
         <ul class="menu hidden" id="JELON__menu">
             
-            <li rel="/tags/hibernate/index.html" class="item ">
+            <li rel="/2018/07/30/为什么String类是不可变的/index.html" class="item ">
                 <a href="/" title="首页" class="icon-home">&nbsp;首页</a>
             </li>
             
-            <li rel="/tags/hibernate/index.html" class="item ">
+            <li rel="/2018/07/30/为什么String类是不可变的/index.html" class="item ">
                 <a href="/lab/" title="实验室" class="icon-lab">&nbsp;实验室</a>
             </li>
             
-            <li rel="/tags/hibernate/index.html" class="item ">
+            <li rel="/2018/07/30/为什么String类是不可变的/index.html" class="item ">
                 <a href="/about/" title="关于" class="icon-about">&nbsp;关于</a>
             </li>
             
-            <li rel="/tags/hibernate/index.html" class="item ">
+            <li rel="/2018/07/30/为什么String类是不可变的/index.html" class="item ">
                 <a href="/comment/" title="留言" class="icon-comment">&nbsp;留言</a>
             </li>
             
@@ -115,74 +115,165 @@
     <div class="container body clearfix">
         <section class="content">
             <div class="content-main widget">
-                <!-- 按标签分类 -->
-
-    <h3 class="widget-hd">
-        <strong>
-            
-                `hibernate`标签下的文章
-            
-        </strong>
-    </h3>
-    
-        <!-- 文章 -->
-<article class="post">
-    <header>
-        <!-- 标签这有且只能显示一个 -->
-        
-        <a class="cat-link" href="/categories/java/">java</a>
-        
-        <!-- 文章标题 -->
-        
-    <h3 class="post-title">
-    	<a href="/whd-mtt.github.io/2018/06/03/Hibernate中get()和load()的区别/">
-    		Hibernate中get()和load()的区别
-    	</a>
-    </h3>
-
+                <!-- 文章页 -->
+<!-- 文章 -->
+<article class="post article">
+    <header class="text-center">
+        <h3 class="post-title"><span>为什么String类是不可变的</span></h3>
     </header>
-    <p class="post-meta">
+    <p class="post-meta text-center">
         whd-mtt 发表于
-        <time datetime="2018-06-03T11:25:50.000Z">2018-06-03</time>
-        &nbsp;&nbsp;
+        <time datetime="2018-07-30T13:23:41.000Z">2018-07-30</time>
+    </p>
+    <div class="post-content">
+        <p>String是所有语言中最常用的一个类。我们知道在Java中，String是不可变的、final的。Java在运行时也保存了一个字符串池(String pool)，这使得String成为了一个特别的类。</p>
+<a id="more"></a>
+<h3 id="String类不可变性的好处"><a href="#String类不可变性的好处" class="headerlink" title="String类不可变性的好处"></a>String类不可变性的好处</h3><ul>
+<li><p>只有当字符串是不可变的，字符串池才有可能实现。字符串池的实现可以在运行时节约很多heap空间，因为不同的字符串变量都指向池中的同一个字符串。但如果字符串是可变的，那么String interning将不能实现(译者注：String interning是指对不同的字符串仅仅只保存一个，即不会保存多个相同的字符串。)，因为这样的话，如果变量改变了它的值，那么其它指向这个值的变量的值也会一起改变。</p>
+</li>
+<li><p>如果字符串是可变的，那么会引起很严重的安全问题。譬如，数据库的用户名、密码都是以字符串的形式传入来获得数据库的连接，或者在socket编程中，主机名和端口都是以字符串的形式传入。因为字符串是不可变的，所以它的值是不可改变的，否则黑客们可以钻到空子，改变字符串指向的对象的值，造成安全漏洞。</p>
+</li>
+<li><p>因为字符串是不可变的，所以是多线程安全的，同一个字符串实例可以被多个线程共享。这样便不用因为线程安全问题而使用同步。字符串自己便是线程安全的。</p>
+</li>
+<li><p>类加载器要用到字符串，不可变性提供了安全性，以便正确的类被加载。譬如你想加载java.sql.Connection类，而这个值被改成了myhacked.Connection，那么会对你的数据库造成不可知的破坏。</p>
+</li>
+<li><p>因为字符串是不可变的，所以在它创建的时候hashcode就被缓存了，不需要重新计算。这就使得字符串很适合作为Map中的键，字符串的处理速度要快过其它的键对象。这就是HashMap中的键往往都使用字符串</p>
+</li>
+</ul>
+<blockquote>
+<p>如果觉得翻译不好的，可以查看原文<a href="https://www.journaldev.com/802/string-immutable-final-java" target="_blank" rel="noopener">原文链接</a></p>
+</blockquote>
+
+    </div>
+    <p class="post-meta">
+        <span class="post-cat">分类：
+            <a class="cat-link" href="/categories/java/">java</a>
+        </span>
         <span class="post-tags">
             标签：
             
     
         <a href="/tags/java/" title="java">java</a> / 
     
-        <a href="/tags/hibernate/" title="hibernate">hibernate</a>
+        <a href="/tags/String/" title="String">String</a>
     
 
         </span>
     </p>
-
-    <div class="post-content">
-        <div class="post-excerpt">
-            
-                <p>最近面试中遇到了关于hibernate中get()和load()两个方法的区别,我在论坛看到了各种论述，我总结了他们的观点以及自己的理解来简单说明下，如果有哪里不对的地方欢迎指正。</p>
-            
-            <p class="more">
-                <a href="/whd-mtt.github.io/2018/06/03/Hibernate中get()和load()的区别/">阅读剩下更多</a>
-            </p>
-        </div>
-        <div class="post-thumbnail" data-img="">
-            <a href="whd-mtt.github.io/2018/06/03/Hibernate中get()和load()的区别/" title="Hibernate中get()和load()的区别">
-                
-                    <img class="thumbnail" src="/img/default.png" data-echo="/img/thumbnail/3.jpg" alt="默认配图" >
-                
-            </a>
-        </div>
-    </div>
 </article>
+<!-- 分享按钮 -->
+
+  <div class="article-share clearfix text-center">
+    <div class="share-area">
+      <span class="share-txt">分享到：</span>
+      <a href="javascript: window.open('http://service.weibo.com/share/share.php?url=' + encodeURIComponent(location.href) + '&title=' + document.title + '&language=zh_cn');" class="share-icon weibo"></a>
+      <a href="javascript: alert('请复制链接到微信并发送');" class="share-icon wechat"></a>
+      <a href="javascript: window.open('http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(location.href) + '&title=' + document.title);" class="share-icon qqzone"></a>
+      <a href="javascript: window.open('http://connect.qq.com/widget/shareqq/index.html?url=' + encodeURIComponent(location.href) + '&desc=Jelon个人博客&title=' + document.title + '&callback=' + encodeURIComponent(location.href));" class="share-icon qq"></a>
+      <a href="javascript: window.open('http://shuo.douban.com/!service/share?href=' + encodeURIComponent(location.href) + '&name=' + document.title + '&text=' + document.title);" class="share-icon douban"></a>
+    </div>
+  </div>
+
+
+<!-- 上一篇/下一篇 -->
+
+<div class="article-nav clearfix">
+    
+    <span class="prev fl">
+        上一篇<br >
+        <a href="javascript: void(0);">没有上一篇了</a>
+    </span>
+    
 
     
+    <span class="next fr">
+        下一篇<br >
+        <a href="/2018/07/05/Consulu服务注册和发现/">
+            
+                Consulu服务注册和发现
+            
+        </a>
+    </span>
+    
+</div>
 
-    
-    <nav class="page-navigator">
-        <span class="page-number current">1</span>
-    </nav>
-    
+<!-- 文章评论 -->
+
+  <script src="/js/comment.js"></script>
+  <div id="comments" class="comment">
+    <!--
+    <div class="sign-bar">
+      GitHub 已登录!
+      <span class="sign-link">登出</span>
+    </div>
+    <section class="box">
+      <div class="com-avatar"><img src="/img/jelon.jpg" alt="avatar"></div>
+      <div class="com-text">
+        <div class="main">
+          <textarea class="text-area-edited show" placeholder="欢迎评论！"></textarea>
+          <div class="text-area-preview"></div>
+        </div>
+        <div class="switch">
+          <div class="switch-item on">编辑</div>
+          <div class="switch-item">预览</div>
+        </div>
+        <div class="button">提交</div>
+      </div>
+    </section>
+    <section class="tips">注：评论支持 markdown 语法！</section>
+    <section class="list-wrap">
+      <ul class="list">
+        <li>
+          <div class="user-avatar">
+            <a href="/">
+              <img src="/img/jelon.jpg" alt="user-avatar">
+            </a>
+          </div>
+          <div class="user-comment">
+            <div class="user-comment-header">
+              <span class="post-name">张德龙</span>
+              <span class="post-time">2017年12月12日</span>
+              <span class="like liked">已赞</span>
+              <span class="like-num">2</span>
+            </div>
+            <div class="user-comment-body">333333</div>
+          </div>
+        </li>
+        <li>
+          <div class="user-avatar">
+            <a href="/">
+              <img src="/img/jelon.jpg" alt="user-avatar">
+            </a>
+          </div>
+          <div class="user-comment">
+            <div class="user-comment-header">
+              <span class="post-name">刘德华</span>
+              <span class="post-time">2017年12月12日</span>
+              <span class="like">点赞</span>
+              <span class="like-num">2</span>
+            </div>
+            <div class="user-comment-body">vvvvv</div>
+          </div>
+        </li>
+      </ul>
+      <div class="page-nav">
+        <a href="javascript: void(0);" class="item">1</a>
+        <a href="javascript: void(0);" class="item">2</a>
+        <a href="javascript: void(0);" class="item current">3</a>
+      </div>
+    </section>
+    -->
+  </div>
+  <script>
+  JELON.Comment({
+    container: 'comments',
+    label: '为什么String类是不可变的' || '2018/07/30/为什么String类是不可变的/',
+    owner: 'whd-mtt',
+    repo: 'blog_comments',
+    clientId: 'b08ed25e52c57993e69c',
+    clientSecret: '1cb9545488f0380904b87350e7c5a270ae03bab7'
+  });
+  </script>
 
 
             </div>
