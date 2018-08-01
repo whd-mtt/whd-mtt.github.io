@@ -127,6 +127,7 @@
     </p>
     <div class="post-content">
         <p>&emsp;&emsp;在并发编程实践中，ConcurrentHashMap是一个经常被使用的数据结构，相比于Hashtable和Collections.synchronizedMap()，前者在线程安全的基础上提供了更好的写并发能力，但同时降低了对读一致性的要求。ConcurrentHashMap的设计与实现非常精巧，大量的利用了volatile，final，CAS和锁分段的技术来减少锁竞争对于性能的影响，接下来我将分别阐述ConcurrentHashMap在JDK6/7/8分别是如何实现的。</p>
+<a id="more"></a>
 <h2 id="1-JDK1-6和1-7中的实现"><a href="#1-JDK1-6和1-7中的实现" class="headerlink" title="1. JDK1.6和1.7中的实现"></a>1. JDK1.6和1.7中的实现</h2><h3 id="1-1-设计思路"><a href="#1-1-设计思路" class="headerlink" title="1.1 设计思路"></a>1.1 设计思路</h3><p>在jdk1.6和1.7中采用了锁分段的技术实现，只有在同一个分段内才存在竞态关系，不同的分段锁之间没有锁竞争，相比于HashTable对整个map加锁的设计，分段锁大大的提高了高并发环境下的处理能力，正因为不是对整个map加锁，导致一些需要扫描整个Map的方法（如size(), containsValue()）需要使用特殊的实现，另外一些方法（如clear()）甚至放弃了对一致性的要求（ConcurrentHashMap是弱一致性的；</p>
 <p>ConcurrentHashMap中的分段锁称为Segment，它即类似于HashMap（JDK7与JDK8中HashMap的实现）的结构，即内部拥有一个Entry数组，数组中的每个元素又是一个链表；同时又是一个ReentrantLock（Segment继承了ReentrantLock）。ConcurrentHashMap中的HashEntry相对于HashMap中的Entry有一定的差异性：HashEntry中的value以及next都被volatile修饰，这样在多线程读写过程中能够保持它们的可见性，代码如下：</p>
 <pre><code>static final class HashEntry&lt;K,V&gt; {
@@ -309,23 +310,23 @@
     </li>
     
     <li>
-        <a href="/categories/微服务/">微服务</a>
-        <span class="badge">(1)</span>
-    </li>
-    
-    <li>
         <a href="/categories/版本控制/">版本控制</a>
         <span class="badge">(1)</span>
     </li>
     
     <li>
-        <a href="/categories/编程工具/">编程工具</a>
+        <a href="/categories/微服务/">微服务</a>
         <span class="badge">(1)</span>
     </li>
     
     <li>
         <a href="/categories/java/">java</a>
         <span class="badge">(3)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/编程工具/">编程工具</a>
+        <span class="badge">(1)</span>
     </li>
     
     <li>
@@ -358,6 +359,10 @@
   
     <a class="tag-item" href="/tags/消息队列/" title="消息队列">消息队列 (1)</a>
   
+    <a class="tag-item" href="/tags/git/" title="git">git (1)</a>
+  
+    <a class="tag-item" href="/tags/版本控制/" title="版本控制">版本控制 (1)</a>
+  
     <a class="tag-item" href="/tags/spring/" title="spring">spring (1)</a>
   
     <a class="tag-item" href="/tags/consul/" title="consul">consul (1)</a>
@@ -366,15 +371,11 @@
   
     <a class="tag-item" href="/tags/微服务/" title="微服务">微服务 (1)</a>
   
-    <a class="tag-item" href="/tags/git/" title="git">git (1)</a>
-  
-    <a class="tag-item" href="/tags/版本控制/" title="版本控制">版本控制 (1)</a>
+    <a class="tag-item" href="/tags/hibernate/" title="hibernate">hibernate (1)</a>
   
     <a class="tag-item" href="/tags/IntelliJ-idea/" title="IntelliJ idea">IntelliJ idea (1)</a>
   
     <a class="tag-item" href="/tags/jetbrains/" title="jetbrains">jetbrains (1)</a>
-  
-    <a class="tag-item" href="/tags/hibernate/" title="hibernate">hibernate (1)</a>
   
     <a class="tag-item" href="/tags/hexo/" title="hexo">hexo (1)</a>
   
@@ -386,11 +387,11 @@
   
     <a class="tag-item" href="/tags/String/" title="String">String (1)</a>
   
+    <a class="tag-item" href="/tags/annotation/" title="annotation">annotation (1)</a>
+  
     <a class="tag-item" href="/tags/并发编程/" title="并发编程">并发编程 (1)</a>
   
     <a class="tag-item" href="/tags/数据结构/" title="数据结构">数据结构 (1)</a>
-  
-    <a class="tag-item" href="/tags/annotation/" title="annotation">annotation (1)</a>
   
 </div>
     </section>
