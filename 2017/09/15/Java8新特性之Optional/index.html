@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8" >
+    <meta name="baidu-site-verification" content="dIcXMeY8Ya" />
+    
+    <title>Java8新特性之Optional | whd-mtt&#39;s blogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" >
+    <meta name="keywords" content="whd-mtt, javaweb, 大数据," >
+    <meta name="description" content="whd-mtt个人前端小站" >
+
+    
+    <link rel="alternative" href="/atom.xml" title="whd-mtt&#39;s blogs" type="application/atom+xml" >
+    
+    
+    <link rel="shortcut icon" href="/favicon.ico" >
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <!--[if lt IE 9]>
+    <script src="/js/html5.js"></script>
+    <![endif]-->
+    
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?fd459238242776d173cdc64918fb32f2";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+</head>
+
+<body class="home">
+    <!--[if lt IE 9]>
+    <div class="browsehappy">
+        当前网页 <strong>不支持</strong>
+        你正在使用的浏览器. 为了正常的访问, 请 <a href="http://browsehappy.com/">升级你的浏览器</a>.
+    </div>
+    <![endif]-->
+
+    <!-- 博客头部 -->
+    <header class="header">
+    <section class="container header-main">
+        <div class="logo">
+            <a href="/">
+                <div class="cover">
+                    <span class="name">whd-mtt&#39;s blogs</span>
+                    <span class="description"></span>
+                </div>
+            </a>
+        </div>
+        <div class="dropnav icon-paragraph-justify" id="JELON__btnDropNav"></div>
+        <ul class="menu hidden" id="JELON__menu">
+            
+            <li rel="/2017/09/15/Java8新特性之Optional/index.html" class="item ">
+                <a href="/" title="首页" class="icon-home">&nbsp;首页</a>
+            </li>
+            
+            <li rel="/2017/09/15/Java8新特性之Optional/index.html" class="item ">
+                <a href="/lab/" title="实验室" class="icon-lab">&nbsp;实验室</a>
+            </li>
+            
+            <li rel="/2017/09/15/Java8新特性之Optional/index.html" class="item ">
+                <a href="/about/" title="关于" class="icon-about">&nbsp;关于</a>
+            </li>
+            
+            <li rel="/2017/09/15/Java8新特性之Optional/index.html" class="item ">
+                <a href="/comment/" title="留言" class="icon-comment">&nbsp;留言</a>
+            </li>
+            
+        </ul>
+        <div class="profile clearfix">
+            <div class="feeds fl">
+                
+                
+                <p class="links">
+                    
+                        <a href="https://github.com/whd-mtt" target="_blank">Github</a>
+                        |
+                    
+                        <a href="" target="_blank">Hosted by Coding Pages</a>
+                        
+                    
+                </p>
+                <p class="sns">
+                    
+                        <a href="https://weibo.com/5048947954/profile?rightmod=1&amp;wvr=6&amp;mod=personinfo&amp;is_all=1" class="sinaweibo" target="_blank"><b>■</b> 新浪微博</a>
+                    
+                        <a href="https://www.facebook.com/profile.php?id=100011855760219&amp;ref=bookmarks" class="qqweibo" target="_blank"><b>■</b> Facebook</a>
+                    
+                    <a href="javascript: void(0);" class="wechat">
+                        <b>■</b>
+                        公众号
+                        <span class="popover">
+                            <img src="/img/wechat_mp.jpg" width="120" height="120" alt="我的微信订阅号">
+                            <i class="arrow"></i>
+                        </span>
+                    </a>
+                </p>
+                
+            </div>
+            <div class="avatar fr">
+                <img src="https://avatars0.githubusercontent.com/u/18564649?s=460&v=4" alt="avatar" title="Jelon" >
+            </div>
+        </div>
+    </section>
+</header>
+
+
+    <!-- 博客正文 -->
+    <div class="container body clearfix">
+        <section class="content">
+            <div class="content-main widget">
+                <!-- 文章页 -->
+<!-- 文章 -->
+<article class="post article">
+    <header class="text-center">
+        <h3 class="post-title"><span>Java8新特性之Optional</span></h3>
+    </header>
+    <p class="post-meta text-center">
+        whd-mtt 发表于
+        <time datetime="2017-09-15T01:12:23.000Z">2017-09-15</time>
+    </p>
+    <div class="post-content">
+        <p>&emsp;&emsp;在我们的开发中，NullPointerException可谓是所有java程序员随时随处可见的一种异常，为了避免空指针异常，我们常常需要进行非空检查，如果你厌倦了空指针异常，可以考虑使用java8的Optional,它能够让你的代码更具有可读性，并保护其不受空指针异常的影响。<br><a id="more"></a></p>
+<blockquote>
+<p><a href="https://www.oracle.com/technetwork/articles/java/java8-optional-2175753.html" target="_blank" rel="noopener">英语比较好的话可以看官方原文</a></p>
+</blockquote>
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h2><p>一位智者曾经说过，除非你处理过空指针异常，否则你不是一个真正的Java程序员。顺便说一句，null引用是许多问题的根源，因为它通常用于表示没有值，其实早在在Google Guava 中就有Optional，在Swift语言中也有这样类似的语法，因此Java SE 8引入了一个名为Java.util.Optional的新类，用来减轻这些问题。</p>
+<h2 id="2-类的说明"><a href="#2-类的说明" class="headerlink" title="2.类的说明"></a>2.类的说明</h2><h4 id="2-1-类中的所有属性和方法"><a href="#2-1-类中的所有属性和方法" class="headerlink" title="2.1 类中的所有属性和方法"></a>2.1 类中的所有属性和方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Optional</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Common instance for &#123;<span class="doctag">@code</span> empty()&#125;.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Optional&lt;?&gt; EMPTY = <span class="keyword">new</span> Optional&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * If non-null, the value; if null, indicates no value is present</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> T value;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Constructs an empty instance.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Optional</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.value = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns an empty &#123;<span class="doctag">@code</span> Optional&#125; instance.  No value is present for this</span></span><br><span class="line"><span class="comment">    	 * Optional.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; Optional&lt;T&gt; <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">        Optional&lt;T&gt; t = (Optional&lt;T&gt;) EMPTY;</span><br><span class="line">        <span class="keyword">return</span> t;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Constructs an instance with the value present.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Optional</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.value = Objects.requireNonNull(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns an &#123;<span class="doctag">@code</span> Optional&#125; with the specified present non-null value.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Optional&lt;T&gt; <span class="title">of</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Optional&lt;&gt;(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns an &#123;<span class="doctag">@code</span> Optional&#125; describing the specified value, if non-null,</span></span><br><span class="line"><span class="comment">     * otherwise returns an empty &#123;<span class="doctag">@code</span> Optional&#125;.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Optional&lt;T&gt; <span class="title">ofNullable</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value == <span class="keyword">null</span> ? empty() : of(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * If a value is present in this &#123;<span class="doctag">@code</span> Optional&#125;, returns the value,</span></span><br><span class="line"><span class="comment">     * otherwise throws &#123;<span class="doctag">@code</span> NoSuchElementException&#125;.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span> Optional#isPresent()</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException(<span class="string">"No value present"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Return &#123;<span class="doctag">@code</span> true&#125; if there is a value present, otherwise &#123;<span class="doctag">@code</span> false&#125;.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPresent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value != <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * If a value is present, invoke the specified consumer with the value,</span></span><br><span class="line"><span class="comment">     * otherwise do nothing.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ifPresent</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> T&gt; consumer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (value != <span class="keyword">null</span>)</span><br><span class="line">            consumer.accept(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * If a value is pre``sent, and the value matches the given predicate,</span></span><br><span class="line"><span class="comment">     * return an &#123;<span class="doctag">@code</span> Optional&#125; describing the value, otherwise return an</span></span><br><span class="line"><span class="comment">     * empty &#123;<span class="doctag">@code</span> Optional&#125;.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Optional&lt;T&gt; <span class="title">filter</span><span class="params">(Predicate&lt;? <span class="keyword">super</span> T&gt; predicate)</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(predicate);</span><br><span class="line">        <span class="keyword">if</span> (!isPresent())</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> predicate.test(value) ? <span class="keyword">this</span> : empty();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * If a value is present, apply the provided mapping function to it,</span></span><br><span class="line"><span class="comment">     * and if the result is non-null, return an &#123;<span class="doctag">@code</span> Optional&#125; describing the</span></span><br><span class="line"><span class="comment">     * result.  Otherwise return an empty &#123;<span class="doctag">@code</span> Optional&#125;.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@apiNote</span> This method supports post-processing on optional values, without</span></span><br><span class="line"><span class="comment">     * the need to explicitly check for a return status.  For example, the</span></span><br><span class="line"><span class="comment">     * following code traverses a stream of file names, selects one that has</span></span><br><span class="line"><span class="comment">     * not yet been processed, and then opens that file, returning an</span></span><br><span class="line"><span class="comment">     * &#123;<span class="doctag">@code</span> Optional&lt;FileInputStream&gt;&#125;:</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * &lt;pre&gt;&#123;<span class="doctag">@code</span></span></span><br><span class="line"><span class="comment">     *     Optional&lt;FileInputStream&gt; fis =</span></span><br><span class="line"><span class="comment">     *         names.stream().filter(name -&gt; !isProcessedYet(name))</span></span><br><span class="line"><span class="comment">     *                       .findFirst()</span></span><br><span class="line"><span class="comment">     *                       .map(name -&gt; new FileInputStream(name));</span></span><br><span class="line"><span class="comment">     * &#125;&lt;/pre&gt;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span>&lt;U&gt; Optional&lt;U&gt; <span class="title">map</span><span class="params">(Function&lt;? <span class="keyword">super</span> T, ? extends U&gt; mapper)</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(mapper);</span><br><span class="line">        <span class="keyword">if</span> (!isPresent())</span><br><span class="line">            <span class="keyword">return</span> empty();</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> Optional.ofNullable(mapper.apply(value));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * If a value is present, apply the provided &#123;<span class="doctag">@code</span> Optional&#125;-bearing</span></span><br><span class="line"><span class="comment">     * mapping function to it, return that result, otherwise return an empty</span></span><br><span class="line"><span class="comment">     * &#123;<span class="doctag">@code</span> Optional&#125;.  This method is similar to &#123;<span class="doctag">@link</span> #map(Function)&#125;,</span></span><br><span class="line"><span class="comment">     * but the provided mapper is one whose result is already an &#123;<span class="doctag">@code</span> Optional&#125;,</span></span><br><span class="line"><span class="comment">     * and if invoked, &#123;<span class="doctag">@code</span> flatMap&#125; does not wrap it with an additional</span></span><br><span class="line"><span class="comment">     * &#123;<span class="doctag">@code</span> Optional&#125;.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span>&lt;U&gt; Optional&lt;U&gt; <span class="title">flatMap</span><span class="params">(Function&lt;? <span class="keyword">super</span> T, Optional&lt;U&gt;&gt; mapper)</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(mapper);</span><br><span class="line">        <span class="keyword">if</span> (!isPresent())</span><br><span class="line">            <span class="keyword">return</span> empty();</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> Objects.requireNonNull(mapper.apply(value));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Return the value if present, otherwise return &#123;<span class="doctag">@code</span> other&#125;.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">orElse</span><span class="params">(T other)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value != <span class="keyword">null</span> ? value : other;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Return the value if present, otherwise invoke &#123;<span class="doctag">@code</span> other&#125; and return</span></span><br><span class="line"><span class="comment">     * the result of that invocation.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">orElseGet</span><span class="params">(Supplier&lt;? extends T&gt; other)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value != <span class="keyword">null</span> ? value : other.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Return the contained value, if present, otherwise throw an exception</span></span><br><span class="line"><span class="comment">     * to be created by the provided supplier.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@apiNote</span> A method reference to the exception constructor with an empty</span></span><br><span class="line"><span class="comment">     * argument list can be used as the supplier. For example,</span></span><br><span class="line"><span class="comment">     * &#123;<span class="doctag">@code</span> IllegalStateException::new&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> &lt;X extends Throwable&gt; <span class="function">T <span class="title">orElseThrow</span><span class="params">(Supplier&lt;? extends X&gt; exceptionSupplier)</span> <span class="keyword">throws</span> X </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (value != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> value;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> exceptionSupplier.get();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Indicates whether some other object is "equal to" this Optional. The</span></span><br><span class="line"><span class="comment">     * other object is considered equal if:</span></span><br><span class="line"><span class="comment">     * &lt;ul&gt;</span></span><br><span class="line"><span class="comment">     * &lt;li&gt;it is also an &#123;<span class="doctag">@code</span> Optional&#125; and;</span></span><br><span class="line"><span class="comment">     * &lt;li&gt;both instances have no value present or;</span></span><br><span class="line"><span class="comment">     * &lt;li&gt;the present values are "equal to" each other via &#123;<span class="doctag">@code</span> equals()&#125;.</span></span><br><span class="line"><span class="comment">     * &lt;/ul&gt;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == obj) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!(obj <span class="keyword">instanceof</span> Optional)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Optional&lt;?&gt; other = (Optional&lt;?&gt;) obj;</span><br><span class="line">        <span class="keyword">return</span> Objects.equals(value, other.value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns the hash code value of the present value, if any, or 0 (zero) if</span></span><br><span class="line"><span class="comment">     * no value is present.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Objects.hashCode(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns a non-empty string representation of this Optional suitable for</span></span><br><span class="line"><span class="comment">     * debugging. The exact presentation format is unspecified and may vary</span></span><br><span class="line"><span class="comment">     * between implementations and versions.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@implSpec</span> If a value is present the result must include its string</span></span><br><span class="line"><span class="comment">     * representation in the result. Empty and present Optionals must be</span></span><br><span class="line"><span class="comment">     * unambiguously differentiable.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value != <span class="keyword">null</span></span><br><span class="line">            ? String.format(<span class="string">"Optional[%s]"</span>, value)</span><br><span class="line">            : <span class="string">"Optional.empty"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-属性和方法解释"><a href="#2-2-属性和方法解释" class="headerlink" title="2.2 属性和方法解释"></a>2.2 属性和方法解释</h4><p>建议大家在学习新的知识的时候，先打开源码看看每个方法的注释说明，介绍了每个方法的作用，刚开始英语不好没关系，看得多了慢慢就会适应了，所以英语对程序员来讲是一个很重要的技能喔，接下来我们看哈每个方法的作用。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public static <t> Optional<t> of(T value)</t></t></td>
+<td>把指定的值封装为Optional对象，如果指定的值为null，则抛出NullPointerException</td>
+</tr>
+<tr>
+<td>public static<t> Optional<t> empty()</t></t></td>
+<td>创建一个空的Optional对象</td>
+</tr>
+<tr>
+<td>public static <t> Optional<t> ofNullable(T value)</t></t></td>
+<td>把指定的值封装为Optional对象，如果指定的值为null，则创建一个空的Optional对象</td>
+</tr>
+<tr>
+<td>public T get()</td>
+<td>如果创建的Optional中有值存在，则返回此值，否则抛出NoSuchElementException</td>
+</tr>
+<tr>
+<td>public T orElse(T other)</td>
+<td>如果创建的Optional中有值存在，则返回此值，否则返回一个默认值</td>
+</tr>
+<tr>
+<td>public T orElseGet(Supplier&lt;? extends T&gt; other)</td>
+<td>如果创建的Optional中有值存在，则返回此值，否则返回一个由Supplier接口生成的值</td>
+</tr>
+<tr>
+<td>public <x extends="" throwable=""> T orElseThrow(Supplier&lt;? extends X&gt; exceptionSupplier) throws X</x></td>
+<td>如果创建的Optional中有值存在，则返回此值，否则抛出一个由指定的Supplier接口生成的异常</td>
+</tr>
+<tr>
+<td>public Optional<t> filter(Predicate&lt;? super T&gt; predicate)</t></td>
+<td>如果创建的Optional中的值满足filter中的条件，则返回包含该值的Optional对象，否则返回一个空的Optional对象</td>
+</tr>
+<tr>
+<td>public<u> Optional<u> map(Function&lt;? super T, ? extends U&gt; mapper)</u></u></td>
+<td>如果创建的Optional中的值存在，对该值执行提供的Function函数调用</td>
+</tr>
+<tr>
+<td>public<u> Optional<u> flatMap(Function&lt;? super T, Optional<u>&gt; mapper)</u></u></u></td>
+<td>如果创建的Optional中的值存在，就对该值执行提供的Function函数调用，返回一个Optional类型的值，否则就返回一个空的Optional对象</td>
+</tr>
+<tr>
+<td>public boolean isPresent()</td>
+<td>如果创建的Optional中的值存在，返回true，否则返回false</td>
+</tr>
+<tr>
+<td>public void ifPresent(Consumer&lt;? super T&gt; consumer)</td>
+<td>如果创建的Optional中的值存在，则执行该方法的调用，否则什么也不做</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-基本使用"><a href="#3-基本使用" class="headerlink" title="3.基本使用"></a>3.基本使用</h2><h4 id="3-1-对象创建"><a href="#3-1-对象创建" class="headerlink" title="3.1 对象创建"></a>3.1 对象创建</h4><ul>
+<li><p>创建一个空对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个空的Optional&lt;User&gt;对象</span></span><br><span class="line">Optional&lt;User&gt; optStr = Optional.empty();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建对象：不允许为空<br>Optional提供了方法of()用于创建非空对象，该方法要求传入的参数不能为空，否则抛NullPointException，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当user为null的时候，将抛出NullPointException</span></span><br><span class="line">User user = <span class="keyword">null</span>;</span><br><span class="line">Optional&lt;User&gt; optionals =  Optional.of(user);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://120.78.190.213/images/learn-java8/optional-of.png" alt="如图示例"></p>
+<ul>
+<li>创建对象：允许为空<br>如果不能确定传入的参数是否存在null值的可能性，则可以用Optional的ofNullable()方法创建对象，如果入参为null，则创建一个空对象。示例如下：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果user是null，则创建一个空对象</span></span><br><span class="line">User user = <span class="keyword">null</span>;</span><br><span class="line">Optional&lt;User&gt; optStr = Optional.ofNullable(user);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-2-存在则返回"><a href="#3-2-存在则返回" class="headerlink" title="3.2 存在则返回"></a>3.2 存在则返回</h4><ul>
+<li>get() 如果创建的Optional中有值存在，则返回此值，否则抛出NoSuchElementException，示例如下：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">User user = <span class="keyword">null</span>;</span><br><span class="line">Optional&lt;User&gt; optional2 = Optional.ofNullable(user);</span><br><span class="line">User user1 = optional2.get();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://120.78.190.213/images/learn-java8/optional-get.png" alt="如图示例"></p>
+<ul>
+<li>orElse(T other) 如果创建的Optional中有值存在，则返回此值，否则返回一个默认值（默认值就是入参参入的值，这里传入null），示例如下：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">User user = <span class="keyword">null</span>;</span><br><span class="line">Optional&lt;User&gt; optional2 = Optional.ofNullable(user);</span><br><span class="line">User user1 = optional2.orElse(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://120.78.190.213/images/learn-java8/optional-orElse.png" alt="如图示例"></p>
+<ul>
+<li>orElseGet(Supplier&lt;? extends T&gt; other) 如果创建的Optional中有值存在，则返回此值，否则返回一个由Supplier接口生成的值（这个生成的值可为空），示例如下：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User user3 = optional2.orElseGet(() -&gt; <span class="keyword">null</span>);</span><br><span class="line">System.out.println(<span class="string">"user3: "</span> + user3);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://120.78.190.213/images/learn-java8/optional-orElseGet.png" alt="如图示例"></p>
+<ul>
+<li>orElseThrow(Supplier&lt;? extends X&gt; exceptionSupplier)  如果创建的Optional中有值存在，则返回此值，否则抛出一个由指定的Supplier接口生成的异常<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User user4 = optional2.orElseThrow(() -&gt; <span class="keyword">null</span>);</span><br><span class="line">System.out.println(<span class="string">"user4: "</span> + user4);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-3-Streams"><a href="#3-3-Streams" class="headerlink" title="3.3 Streams"></a>3.3 Streams</h4>
+    </div>
+    <p class="post-meta">
+        <span class="post-cat">分类：
+            <a class="cat-link" href="/categories/java/">java</a>
+        </span>
+        <span class="post-tags">
+            标签：
+            
+    
+        <a href="/tags/Optional/" title="Optional">Optional</a> / 
+    
+        <a href="/tags/java/" title="java">java</a>
+    
+
+        </span>
+    </p>
+</article>
+<!-- 分享按钮 -->
+
+  <div class="article-share clearfix text-center">
+    <div class="share-area">
+      <span class="share-txt">分享到：</span>
+      <a href="javascript: window.open('http://service.weibo.com/share/share.php?url=' + encodeURIComponent(location.href) + '&title=' + document.title + '&language=zh_cn');" class="share-icon weibo"></a>
+      <a href="javascript: alert('请复制链接到微信并发送');" class="share-icon wechat"></a>
+      <a href="javascript: window.open('http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(location.href) + '&title=' + document.title);" class="share-icon qqzone"></a>
+      <a href="javascript: window.open('http://connect.qq.com/widget/shareqq/index.html?url=' + encodeURIComponent(location.href) + '&desc=Jelon个人博客&title=' + document.title + '&callback=' + encodeURIComponent(location.href));" class="share-icon qq"></a>
+      <a href="javascript: window.open('http://shuo.douban.com/!service/share?href=' + encodeURIComponent(location.href) + '&name=' + document.title + '&text=' + document.title);" class="share-icon douban"></a>
+    </div>
+  </div>
+
+
+<!-- 上一篇/下一篇 -->
+
+<div class="article-nav clearfix">
+    
+    <span class="prev fl">
+        上一篇<br >
+        <a href="/2017/10/15/利用nginx搭建图片服务器/">
+            
+                利用nginx搭建图片服务器
+            
+        </a>
+    </span>
+    
+
+    
+    <span class="next fr">
+        下一篇<br >
+        <a href="javascript: void(0);">没有下一篇了</a>
+    </span>
+    
+</div>
+
+<!-- 文章评论 -->
+
+  <script src="/js/comment.js"></script>
+  <div id="comments" class="comment">
+    <!--
+    <div class="sign-bar">
+      GitHub 已登录!
+      <span class="sign-link">登出</span>
+    </div>
+    <section class="box">
+      <div class="com-avatar"><img src="/img/jelon.jpg" alt="avatar"></div>
+      <div class="com-text">
+        <div class="main">
+          <textarea class="text-area-edited show" placeholder="欢迎评论！"></textarea>
+          <div class="text-area-preview"></div>
+        </div>
+        <div class="switch">
+          <div class="switch-item on">编辑</div>
+          <div class="switch-item">预览</div>
+        </div>
+        <div class="button">提交</div>
+      </div>
+    </section>
+    <section class="tips">注：评论支持 markdown 语法！</section>
+    <section class="list-wrap">
+      <ul class="list">
+        <li>
+          <div class="user-avatar">
+            <a href="/">
+              <img src="/img/jelon.jpg" alt="user-avatar">
+            </a>
+          </div>
+          <div class="user-comment">
+            <div class="user-comment-header">
+              <span class="post-name">张德龙</span>
+              <span class="post-time">2017年12月12日</span>
+              <span class="like liked">已赞</span>
+              <span class="like-num">2</span>
+            </div>
+            <div class="user-comment-body">333333</div>
+          </div>
+        </li>
+        <li>
+          <div class="user-avatar">
+            <a href="/">
+              <img src="/img/jelon.jpg" alt="user-avatar">
+            </a>
+          </div>
+          <div class="user-comment">
+            <div class="user-comment-header">
+              <span class="post-name">刘德华</span>
+              <span class="post-time">2017年12月12日</span>
+              <span class="like">点赞</span>
+              <span class="like-num">2</span>
+            </div>
+            <div class="user-comment-body">vvvvv</div>
+          </div>
+        </li>
+      </ul>
+      <div class="page-nav">
+        <a href="javascript: void(0);" class="item">1</a>
+        <a href="javascript: void(0);" class="item">2</a>
+        <a href="javascript: void(0);" class="item current">3</a>
+      </div>
+    </section>
+    -->
+  </div>
+  <script>
+  JELON.Comment({
+    container: 'comments',
+    label: 'Java8新特性之Optional' || '2017/09/15/Java8新特性之Optional/',
+    owner: 'whd-mtt',
+    repo: 'blog_comments',
+    clientId: '1ebc041b241fe73c97b4',
+    clientSecret: '6e64112d7cc6cec12037c700b871b064ff3a9955'
+  });
+  </script>
+
+
+            </div>
+
+        </section>
+        <!-- 侧栏部分 -->
+<aside class="sidebar">
+    <section class="widget">
+        <h3 class="widget-hd"><strong>文章分类</strong></h3>
+        <!-- 文章分类 -->
+<ul class="widget-bd">
+    
+    <li>
+        <a href="/categories/中间件/">中间件</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/版本控制/">版本控制</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/编程工具/">编程工具</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/java/">java</a>
+        <span class="badge">(4)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/github/">github</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/前端/">前端</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/nginx/">nginx</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/并发编程/">并发编程</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/微服务/">微服务</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+</ul>
+    </section>
+
+    
+    <section class="widget">
+        <h3 class="widget-hd"><strong>热门标签</strong></h3>
+        <!-- 文章标签 -->
+<div class="widget-bd tag-wrap">
+  
+    <a class="tag-item" href="/tags/RabbitMQ/" title="RabbitMQ">RabbitMQ (1)</a>
+  
+    <a class="tag-item" href="/tags/linux/" title="linux">linux (1)</a>
+  
+    <a class="tag-item" href="/tags/消息队列/" title="消息队列">消息队列 (1)</a>
+  
+    <a class="tag-item" href="/tags/git/" title="git">git (1)</a>
+  
+    <a class="tag-item" href="/tags/版本控制/" title="版本控制">版本控制 (1)</a>
+  
+    <a class="tag-item" href="/tags/IntelliJ-idea/" title="IntelliJ idea">IntelliJ idea (1)</a>
+  
+    <a class="tag-item" href="/tags/jetbrains/" title="jetbrains">jetbrains (1)</a>
+  
+    <a class="tag-item" href="/tags/Optional/" title="Optional">Optional (1)</a>
+  
+    <a class="tag-item" href="/tags/java/" title="java">java (6)</a>
+  
+    <a class="tag-item" href="/tags/hexo/" title="hexo">hexo (1)</a>
+  
+    <a class="tag-item" href="/tags/博客/" title="博客">博客 (1)</a>
+  
+    <a class="tag-item" href="/tags/String/" title="String">String (1)</a>
+  
+    <a class="tag-item" href="/tags/bootstrap-table/" title="bootstrap-table">bootstrap-table (1)</a>
+  
+    <a class="tag-item" href="/tags/js/" title="js">js (1)</a>
+  
+    <a class="tag-item" href="/tags/图片服务器/" title="图片服务器">图片服务器 (1)</a>
+  
+    <a class="tag-item" href="/tags/nginx/" title="nginx">nginx (1)</a>
+  
+    <a class="tag-item" href="/tags/并发编程/" title="并发编程">并发编程 (1)</a>
+  
+    <a class="tag-item" href="/tags/数据结构/" title="数据结构">数据结构 (1)</a>
+  
+    <a class="tag-item" href="/tags/spring/" title="spring">spring (1)</a>
+  
+    <a class="tag-item" href="/tags/consul/" title="consul">consul (1)</a>
+  
+    <a class="tag-item" href="/tags/微服务/" title="微服务">微服务 (1)</a>
+  
+    <a class="tag-item" href="/tags/annotation/" title="annotation">annotation (1)</a>
+  
+    <a class="tag-item" href="/tags/hibernate/" title="hibernate">hibernate (1)</a>
+  
+</div>
+    </section>
+    
+
+    
+
+    
+    <!-- 友情链接 -->
+    <section class="widget">
+        <h3 class="widget-hd"><strong>友情链接</strong></h3>
+        <!-- 文章分类 -->
+<ul class="widget-bd">
+    
+        <li>
+            <a href="http://blog.sina.com.cn/u/1825875765" target="_blank" title="网络安全博客">Haoren博客</a>
+        </li>
+    
+        <li>
+            <a href="http://blog.csdn.net/yeweiouyang" target="_blank" title="技术博客">Maxwell博客</a>
+        </li>
+    
+        <li>
+            <a href="http://xuanzh.cc/" target="_blank" title="技术博客">朱旋个人博客</a>
+        </li>
+    
+</ul>
+    </section>
+    
+</aside>
+<!-- / 侧栏部分 -->
+    </div>
+
+    <!-- 博客底部 -->
+    <footer class="footer">
+    &copy;
+    
+        2016-2018
+    
+
+    <a href="/">Whd-mtt Loves You</a>
+</footer>
+<div class="back-to-top" id="JELON__backToTop" title="返回顶部">返回顶部</div>
+
+    <!--博客js脚本 -->
+    <!-- 这里放网站js脚本 -->
+<script src="/js/main.js"></script>
+</body>
+</html>
