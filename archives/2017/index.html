@@ -264,19 +264,7 @@
     <div class="post-content">
         <div class="post-excerpt">
             
-                <p>&emsp;&emsp;我们知道在多线程中，线程在启动的时候不是马上去执行任务的，而是由cpu调度让哪一个线程执行，通常情况下多线程的执行顺序是随机的，如果我们想要让线程按照一定的顺序让线程执行，怎么做呢？</p>
-<h3 id="1-初见"><a href="#1-初见" class="headerlink" title="1.初见"></a>1.初见</h3><p>首先我们先上一段代码,看看执行效果。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread1 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread1 开始执行"</span>));</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread2 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread2 开始执行"</span>));</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread3 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread3 开始执行"</span>));</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    thread1.start();</span><br><span class="line">    thread2.start();</span><br><span class="line">    thread3.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行结果如图所示：<br><img src="http://120.78.190.213/images/multithread/multithread-orderexecute.png" alt="如图示"><br>从代码运行结果看，线程执行的顺序是随机的，我们无法保证线程按照特定的顺序执行，线程启动之后处于就绪状态，等待CPU调度执行，也就是说如果不做处理话，我们是无法控制的。</p>
-<h3 id="2-相恋"><a href="#2-相恋" class="headerlink" title="2.相恋"></a>2.相恋</h3><h4 id="2-1-设置线程优先级"><a href="#2-1-设置线程优先级" class="headerlink" title="2.1 设置线程优先级"></a>2.1 设置线程优先级</h4><p>线程的执行除了CPU调度外，还有一个因素就是每个线程的优先级，线程的级别有1-10个等级，级别越高表示线程越有可能拿到CPU时间片，但是并不是优先级越高的线程就一定比优先级低的线程更早获得CPU时间片执行任务呢，按但是否定的，我们只能说优先级高的线程更有可能获取的执行权，如果说优先级高的进入了等待，那么优先级低的线程就会执行，如果几个线程都处于就组状态，那毫无疑问优先级高的线程就会先执行。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread1 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread1 开始执行"</span>));</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread2 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread2 开始执行"</span>));</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread3 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread3 开始执行"</span>));</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	thread3.setPriority(Thread.MAX_PRIORITY);</span><br><span class="line">	thread2.setPriority(Thread.NORM_PRIORITY);</span><br><span class="line">	thread1.setPriority(Thread.MIN_PRIORITY);</span><br><span class="line">	thread1.start();</span><br><span class="line">	thread2.start();</span><br><span class="line">	thread3.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://120.78.190.213/images/multithread/multithread-orderexecute-priority.png" alt="如图示"></p>
-<h4 id="2-2-Thread-join"><a href="#2-2-Thread-join" class="headerlink" title="2.2 Thread.join()"></a>2.2 Thread.join()</h4><p>我们Thread.join()方法就是让主线程等待，新线程执行完了后再继续执行主线程，让我们来看一下Thread.join()方法的源码吧<br>源码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">join</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    join(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">join</span><span class="params">(<span class="keyword">long</span> millis)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> base = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">long</span> now = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (millis &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"timeout value is negative"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (millis == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">while</span> (isAlive()) &#123;</span><br><span class="line">                wait(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (isAlive()) &#123;</span><br><span class="line">                <span class="keyword">long</span> delay = millis - now;</span><br><span class="line">                <span class="keyword">if</span> (delay &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                wait(delay);</span><br><span class="line">                now = System.currentTimeMillis() - base;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>源码很清晰的告诉我们，当我们调用join()方法后，后调用join(long millis)，在millis == 0的情况下，如果当前线程是存活的，就让当前线程等待，让新线程继续执行知道死亡，知道原理后就来实现下代码喔。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread1 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread1 开始执行"</span>));</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread2 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread2 开始执行"</span>));</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread3 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread3 开始执行"</span>));</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    thread1.start();</span><br><span class="line">    thread1.join();</span><br><span class="line">    thread2.start();</span><br><span class="line">    thread2.join();</span><br><span class="line">    thread3.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://120.78.190.213/images/multithread/multithread-orderexecute-join.png" alt=""></p>
-<h4 id="2-3-Executors-newSingleThreadExecutor"><a href="#2-3-Executors-newSingleThreadExecutor" class="headerlink" title="2.3 Executors.newSingleThreadExecutor()"></a>2.3 Executors.newSingleThreadExecutor()</h4><p>Executors.newSingleThreadExecutor()就是创建一个只有一个线程线程池，让我们看了一个源码吧<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newSingleThreadExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> FinalizableDelegatedExecutorService</span><br><span class="line">        (<span class="keyword">new</span> ThreadPoolExecutor(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>我们可以看到Executors.newSingleThreadExecutor()实际上是创建了一个单线程的线程池，并且维护了一个任务队列，我们知道队列的特点就是FIFO(先进先出)，而且线程池每次只能执行一个任务线程，其余的线程实际上放到new LinkedBlockingQueue<runnable>()这个队列里等待CPU调度，当第一个线程执行完了后，线程池就会从队列取下一个任务线程来执行，以此类推，从而保证了线程的执行顺序，来看看代码怎么实现的吧<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread1 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread1 开始执行"</span>));</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread2 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread2 开始执行"</span>));</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Thread thread3 = <span class="keyword">new</span> Thread(()-&gt;System.out.println(<span class="string">"thread3 开始执行"</span>));</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> ExecutorService service = Executors.newSingleThreadExecutor();</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    service.execute(thread1);</span><br><span class="line">    service.execute(thread2);</span><br><span class="line">    service.execute(thread3);</span><br><span class="line">    service.shutdown();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></runnable></p>
-<p><img src="http://120.78.190.213/images/multithread/multithread-orderexecute-executors.png" alt=""></p>
-<h3 id="婚恋"><a href="#婚恋" class="headerlink" title="婚恋"></a>婚恋</h3><p>以上就是控制多线程执行顺序方法，有什么不对欢迎指正喔。</p>
-
+                <p>&emsp;&emsp;我们知道在多线程中，线程在启动的时候不是马上去执行任务的，而是由cpu调度让哪一个线程执行，通常情况下多线程的执行顺序是随机的，如果我们想要让线程按照一定的顺序让线程执行，怎么做呢？<br>
             
             <p class="more">
                 <a href="/whd-mtt.github.io/2017/06/03/多线程之线程顺序执行/">阅读剩下更多</a>
@@ -317,8 +305,18 @@
     </li>
     
     <li>
+        <a href="/categories/微服务/">微服务</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
         <a href="/categories/版本控制/">版本控制</a>
         <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/java/">java</a>
+        <span class="badge">(5)</span>
     </li>
     
     <li>
@@ -332,18 +330,8 @@
     </li>
     
     <li>
-        <a href="/categories/微服务/">微服务</a>
-        <span class="badge">(1)</span>
-    </li>
-    
-    <li>
         <a href="/categories/前端/">前端</a>
         <span class="badge">(1)</span>
-    </li>
-    
-    <li>
-        <a href="/categories/java/">java</a>
-        <span class="badge">(5)</span>
     </li>
     
     <li>
@@ -371,18 +359,6 @@
   
     <a class="tag-item" href="/tags/消息队列/" title="消息队列">消息队列 (1)</a>
   
-    <a class="tag-item" href="/tags/git/" title="git">git (1)</a>
-  
-    <a class="tag-item" href="/tags/版本控制/" title="版本控制">版本控制 (1)</a>
-  
-    <a class="tag-item" href="/tags/IntelliJ-idea/" title="IntelliJ idea">IntelliJ idea (1)</a>
-  
-    <a class="tag-item" href="/tags/jetbrains/" title="jetbrains">jetbrains (1)</a>
-  
-    <a class="tag-item" href="/tags/hexo/" title="hexo">hexo (1)</a>
-  
-    <a class="tag-item" href="/tags/博客/" title="博客">博客 (1)</a>
-  
     <a class="tag-item" href="/tags/spring/" title="spring">spring (1)</a>
   
     <a class="tag-item" href="/tags/consul/" title="consul">consul (1)</a>
@@ -391,27 +367,39 @@
   
     <a class="tag-item" href="/tags/微服务/" title="微服务">微服务 (1)</a>
   
+    <a class="tag-item" href="/tags/git/" title="git">git (1)</a>
+  
+    <a class="tag-item" href="/tags/版本控制/" title="版本控制">版本控制 (1)</a>
+  
+    <a class="tag-item" href="/tags/hibernate/" title="hibernate">hibernate (1)</a>
+  
+    <a class="tag-item" href="/tags/IntelliJ-idea/" title="IntelliJ idea">IntelliJ idea (1)</a>
+  
+    <a class="tag-item" href="/tags/jetbrains/" title="jetbrains">jetbrains (1)</a>
+  
+    <a class="tag-item" href="/tags/Optional/" title="Optional">Optional (1)</a>
+  
+    <a class="tag-item" href="/tags/hexo/" title="hexo">hexo (1)</a>
+  
+    <a class="tag-item" href="/tags/博客/" title="博客">博客 (1)</a>
+  
     <a class="tag-item" href="/tags/bootstrap-table/" title="bootstrap-table">bootstrap-table (1)</a>
   
     <a class="tag-item" href="/tags/js/" title="js">js (1)</a>
   
     <a class="tag-item" href="/tags/String/" title="String">String (1)</a>
   
-    <a class="tag-item" href="/tags/多线程/" title="多线程">多线程 (1)</a>
-  
     <a class="tag-item" href="/tags/图片服务器/" title="图片服务器">图片服务器 (1)</a>
   
     <a class="tag-item" href="/tags/nginx/" title="nginx">nginx (1)</a>
   
-    <a class="tag-item" href="/tags/Optional/" title="Optional">Optional (1)</a>
+    <a class="tag-item" href="/tags/多线程/" title="多线程">多线程 (1)</a>
   
     <a class="tag-item" href="/tags/并发编程/" title="并发编程">并发编程 (1)</a>
   
     <a class="tag-item" href="/tags/数据结构/" title="数据结构">数据结构 (1)</a>
   
     <a class="tag-item" href="/tags/annotation/" title="annotation">annotation (1)</a>
-  
-    <a class="tag-item" href="/tags/hibernate/" title="hibernate">hibernate (1)</a>
   
 </div>
     </section>
