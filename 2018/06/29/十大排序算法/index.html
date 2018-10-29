@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8" >
     <meta name="baidu-site-verification" content="dIcXMeY8Ya" />
     
-    <title>利用nginx搭建图片服务器 | whd-mtt&#39;s blogs</title>
+    <title>十大排序算法 | whd-mtt&#39;s blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" >
     <meta name="keywords" content="whd-mtt, javaweb, 大数据," >
     <meta name="description" content="whd-mtt个人前端小站" >
@@ -56,19 +56,19 @@
         <div class="dropnav icon-paragraph-justify" id="JELON__btnDropNav"></div>
         <ul class="menu hidden" id="JELON__menu">
             
-            <li rel="/2017/10/15/利用nginx搭建图片服务器/index.html" class="item ">
+            <li rel="/2018/06/29/十大排序算法/index.html" class="item ">
                 <a href="/" title="首页" class="icon-home">&nbsp;首页</a>
             </li>
             
-            <li rel="/2017/10/15/利用nginx搭建图片服务器/index.html" class="item ">
+            <li rel="/2018/06/29/十大排序算法/index.html" class="item ">
                 <a href="/lab/" title="实验室" class="icon-lab">&nbsp;实验室</a>
             </li>
             
-            <li rel="/2017/10/15/利用nginx搭建图片服务器/index.html" class="item ">
+            <li rel="/2018/06/29/十大排序算法/index.html" class="item ">
                 <a href="/about/" title="关于" class="icon-about">&nbsp;关于</a>
             </li>
             
-            <li rel="/2017/10/15/利用nginx搭建图片服务器/index.html" class="item ">
+            <li rel="/2018/06/29/十大排序算法/index.html" class="item ">
                 <a href="/comment/" title="留言" class="icon-comment">&nbsp;留言</a>
             </li>
             
@@ -119,28 +119,42 @@
 <!-- 文章 -->
 <article class="post article">
     <header class="text-center">
-        <h3 class="post-title"><span>利用nginx搭建图片服务器</span></h3>
+        <h3 class="post-title"><span>十大排序算法</span></h3>
     </header>
     <p class="post-meta text-center">
         whd-mtt 发表于
-        <time datetime="2017-10-15T15:17:58.000Z">2017-10-15</time>
+        <time datetime="2018-06-29T12:39:14.000Z">2018-06-29</time>
     </p>
     <div class="post-content">
-        <p>&emsp;&emsp;大家经常在做项目的时候，特别是javaweb服务，对于图片等静态文件的处理都是放在项目里面的，这种方式在小型系统中是没有问题的，但是随着业务地不断增加，图片数量地增加，应用服务器的性能就会大幅度减小, 为了缓解应用服务器的压力, 搭建一个专门用来存储图片等静态资源的服务器是必须的，接下来就会教大家如何搭建一个图片服务器。</p>
+        <p>我们通常所说的排序算法往往指的是内部排序算法，即数据记录在内存中进行排序。排序算法大体可分为两种：一种是比较排序，时间复杂度O(nlogn) ~ O(n^2)，主要有：冒泡排序，选择排序，插入排序，归并排序，堆排序，快速排序等。另一种是非比较排序，时间复杂度可以达到O(n)，主要有：计数排序，基数排序，桶排序等。这里我们来探讨一下常用的算法。</p>
 <a id="more"></a>
-<h2 id="图片服务器的现状"><a href="#图片服务器的现状" class="headerlink" title="图片服务器的现状"></a>图片服务器的现状</h2>
+<h4 id="1-冒泡排序"><a href="#1-冒泡排序" class="headerlink" title="1.冒泡排序"></a>1.冒泡排序</h4><p><a href="https://github.com/whd-mtt/interview-preparation/blob/master/src/main/java/com/whd/interview/preparation/sortalgorithm/BubbleSort.java" target="_blank" rel="noopener">1.冒泡排序</a></p>
+<blockquote>
+<p>算法思想：从数组中第一个数开始，依次遍历数组中的每一个数，通过相邻比较交换，每一轮循环下来找出剩余未排序数的中的最大数并”冒泡”至数列的顶端</p>
+</blockquote>
+<p>算法步骤：<br>（1）从数组中第一个数开始，依次与下一个数比较并次交换比自己小的数，直到最后一个数。如果发生交换，则继续下面的步骤，如果未发生交换，则数组有序，排序结束，此时时间复杂度为O(n)；<br>（2）每一轮”冒泡”结束后，最大的数将出现在乱序数列的最后一位。重复步骤（1）。</p>
+<p>稳定性：稳定排序。</p>
+<p>时间复杂度： O(n)至O(n2)，平均时间复杂度为O(n2)。<br>最好的情况：如果待排序数据序列为正序，则一趟冒泡就可完成排序，排序码的比较次数为n-1次，且没有移动，时间复杂度为O(n)。<br>最坏的情况：如果待排序数据序列为逆序，则冒泡排序需要n-1次趟起泡，每趟进行n-i次排序码的比较和移动，即比较和移动次数均达到最大值：<br>比较次数:Cmax=∑i=1n−1(n−i)=n(n−1)/2=O(n2)<br>移动次数等于比较次数，因此最坏时间复杂度为O(n2)。</p>
+<p><a href="https://github.com/whd-mtt/interview-preparation/blob/master/src/main/java/com/whd/interview/preparation/sortalgorithm/QuickSort.java" target="_blank" rel="noopener">2.快速排序</a><br>快速排序（Quicksort）是对冒泡排序的一种改进</p>
+<blockquote>
+<p>算法思想： 通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+</blockquote>
+<p>(1)设置两个变量i、j，排序开始的时候：i=0，j=N-1；<br>(2)以第一个数组元素作为关键数据，赋值给key，即key=A[0]；<br>(3)从j开始向前搜索，即由后开始向前搜索(j–)，找到第一个小于key的值A[j]，将A[j]和A[i]互换；<br>(4)从i开始向后搜索，即由前开始向后搜索(i++)，找到第一个大于key的A[i]，将A[i]和A[j]互换；<br>(5)重复第3、4步，直到i=j； (3,4步中，没找到符合条件的值，即3中A[j]不小于key,4中A[i]不大于key的时候改变j、i的值，使得j=j-1，i=i+1，直至找到为止。找到符合条件的值，进行交换的时候i， j指针位置不变。另外，i==j这一过程一定正好是i+或j-完成的时候，此时令循环结束）。</p>
+<p>稳定性：不稳定排序。</p>
+<p>时间复杂度： O（nlog2n）至O(n2)，平均时间复杂度为O（nlgn）。<br>最好的情况：是每趟排序结束后，每次划分使两个子文件的长度大致相等，时间复杂度为O（nlog2n）。<br>最坏的情况：是待排序记录已经排好序，第一趟经过n-1次比较后第一个记录保持位置不变，并得到一个n-1个元素的子记录；第二趟经过n-2次比较，将第二个记录定位在原来的位置上，并得到一个包括n-2个记录的子文件，依次类推，这样总的比较次数是：<br>Cmax=∑i=1n−1(n−i)=n(n−1)/2=O(n2)</p>
+
     </div>
     <p class="post-meta">
         <span class="post-cat">分类：
-            <a class="cat-link" href="/categories/nginx/">nginx</a>
+            <a class="cat-link" href="/categories/算法/">算法</a>
         </span>
         <span class="post-tags">
             标签：
             
     
-        <a href="/tags/图片服务器/" title="图片服务器">图片服务器</a> / 
+        <a href="/tags/排序/" title="排序">排序</a> / 
     
-        <a href="/tags/nginx/" title="nginx">nginx</a>
+        <a href="/tags/算法/" title="算法">算法</a>
     
 
         </span>
@@ -166,9 +180,9 @@
     
     <span class="prev fl">
         上一篇<br >
-        <a href="/2018/05/03/注解的原理和应用/">
+        <a href="/2018/07/05/Consulu服务注册和发现/">
             
-                注解的原理和应用
+                Consulu服务注册和发现
             
         </a>
     </span>
@@ -177,9 +191,9 @@
     
     <span class="next fr">
         下一篇<br >
-        <a href="/2017/09/15/Java8新特性之Optional/">
+        <a href="/2018/06/03/ubuntu16.04.3安装rabbitmq服务器/">
             
-                Java8新特性之Optional
+                Bootstrap-table分页删除尾页数据后刷新无数据问题
             
         </a>
     </span>
@@ -256,7 +270,7 @@
   <script>
   JELON.Comment({
     container: 'comments',
-    label: '利用nginx搭建图片服务器' || '2017/10/15/利用nginx搭建图片服务器/',
+    label: '十大排序算法' || '2018/06/29/十大排序算法/',
     owner: 'whd-mtt',
     repo: 'blog_comments',
     clientId: '1ebc041b241fe73c97b4',
