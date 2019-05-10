@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8" >
+    <meta name="baidu-site-verification" content="dIcXMeY8Ya" />
+    
+    <title>Tomcat性能优化 | itratel&#39;s blogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" >
+    <meta name="keywords" content="itratel, javaweb, 大数据," >
+    <meta name="description" content="itratel个人前端小站" >
+
+    
+    <link rel="alternative" href="/atom.xml" title="itratel&#39;s blogs" type="application/atom+xml" >
+    
+    
+    <link rel="shortcut icon" href="/favicon.ico" >
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <!--[if lt IE 9]>
+    <script src="/js/html5.js"></script>
+    <![endif]-->
+    
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?fd459238242776d173cdc64918fb32f2";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+</head>
+
+<body class="home">
+    <!--[if lt IE 9]>
+    <div class="browsehappy">
+        当前网页 <strong>不支持</strong>
+        你正在使用的浏览器. 为了正常的访问, 请 <a href="http://browsehappy.com/">升级你的浏览器</a>.
+    </div>
+    <![endif]-->
+
+    <!-- 博客头部 -->
+    <header class="header">
+    <section class="container header-main">
+        <div class="logo">
+            <a href="/">
+                <div class="cover">
+                    <span class="name">itratel&#39;s blogs</span>
+                    <span class="description"></span>
+                </div>
+            </a>
+        </div>
+        <div class="dropnav icon-paragraph-justify" id="JELON__btnDropNav"></div>
+        <ul class="menu hidden" id="JELON__menu">
+            
+            <li rel="/2019/05/11/Tomcat性能优化/index.html" class="item ">
+                <a href="/" title="首页" class="icon-home">&nbsp;首页</a>
+            </li>
+            
+            <li rel="/2019/05/11/Tomcat性能优化/index.html" class="item ">
+                <a href="/lab/" title="实验室" class="icon-lab">&nbsp;实验室</a>
+            </li>
+            
+            <li rel="/2019/05/11/Tomcat性能优化/index.html" class="item ">
+                <a href="/about/" title="关于" class="icon-about">&nbsp;关于</a>
+            </li>
+            
+            <li rel="/2019/05/11/Tomcat性能优化/index.html" class="item ">
+                <a href="/comment/" title="留言" class="icon-comment">&nbsp;留言</a>
+            </li>
+            
+        </ul>
+        <div class="profile clearfix">
+            <div class="feeds fl">
+                
+                
+                <p class="links">
+                    
+                        <a href="https://github.com/itratel" target="_blank">Github</a>
+                        |
+                    
+                        <a href="" target="_blank">Hosted by Coding Pages</a>
+                        
+                    
+                </p>
+                <p class="sns">
+                    
+                        <a href="https://weibo.com/5048947954/profile?rightmod=1&amp;wvr=6&amp;mod=personinfo&amp;is_all=1" class="sinaweibo" target="_blank"><b>■</b> 新浪微博</a>
+                    
+                        <a href="https://www.facebook.com/profile.php?id=100011855760219&amp;ref=bookmarks" class="qqweibo" target="_blank"><b>■</b> Facebook</a>
+                    
+                    <a href="javascript: void(0);" class="wechat">
+                        <b>■</b>
+                        公众号
+                        <span class="popover">
+                            <img src="/img/wechat_mp.jpg" width="120" height="120" alt="我的微信订阅号">
+                            <i class="arrow"></i>
+                        </span>
+                    </a>
+                </p>
+                
+            </div>
+            <div class="avatar fr">
+                <img src="https://avatars0.githubusercontent.com/u/18564649?s=460&v=4" alt="avatar" title="Jelon" >
+            </div>
+        </div>
+    </section>
+</header>
+
+
+    <!-- 博客正文 -->
+    <div class="container body clearfix">
+        <section class="content">
+            <div class="content-main widget">
+                <!-- 文章页 -->
+<!-- 文章 -->
+<article class="post article">
+    <header class="text-center">
+        <h3 class="post-title"><span>Tomcat性能优化</span></h3>
+    </header>
+    <p class="post-meta text-center">
+        whd-mtt 发表于
+        <time datetime="2019-05-10T16:33:46.000Z">2019-05-11</time>
+    </p>
+    <div class="post-content">
+        <h3 id="1-What-is-Tomcat"><a href="#1-What-is-Tomcat" class="headerlink" title="1 What is Tomcat"></a>1 What is Tomcat</h3><p>The Apache Tomcat® software is an open source implementation of the Java Servlet, JavaServer<br>Pages, Java Expression Language and Java WebSocket technologies.<br><a id="more"></a></p>
+<h3 id="2-Version-choose-and-reason"><a href="#2-Version-choose-and-reason" class="headerlink" title="2 Version choose and reason"></a>2 Version choose and reason</h3><h4 id="2-1-Version-choose"><a href="#2-1-Version-choose" class="headerlink" title="2.1 Version choose"></a>2.1 Version choose</h4><p>Tomcat版本：Tomcat8.0.11<br>jdk版本：大于等于jdk1.7—&gt;【Download/Which version 】<br>tomcat各个版本下载地址：【Download/Archives 】 各个版本产品和源码</p>
+<h4 id="2-2-Reason"><a href="#2-2-Reason" class="headerlink" title="2.2 Reason"></a>2.2 Reason</h4><p>在tomcat7.0中没有NIO2，在tomcat8.5中没有BIO，而在tomcat8.0中支持的比较丰富<br>可以在源码中验证一下:AbstractEndpoint.bind()—&gt;implementation</p>
+<h3 id="3-了解回顾"><a href="#3-了解回顾" class="headerlink" title="3 了解回顾"></a>3 了解回顾</h3><h4 id="3-1-源码需要引入的pom-xml文件"><a href="#3-1-源码需要引入的pom-xml文件" class="headerlink" title="3.1 源码需要引入的pom.xml文件"></a>3.1 源码需要引入的pom.xml文件</h4><p>在tomcat源码的根目录新建pom.xml文件，将下面这段内容复制到pom.xml文件中<br>The Apache Tomcat® software is an open source implementation of the Java Servlet, JavaServer<br>Pages, Java Expression Language and Java WebSocket technologies.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;</span><br><span class="line">xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0</span><br><span class="line">http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;</span><br><span class="line">&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</span><br><span class="line">&lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;Tomcat8.0&lt;/artifactId&gt;</span><br><span class="line">&lt;name&gt;Tomcat8.0&lt;/name&gt;</span><br><span class="line">&lt;version&gt;8.0&lt;/version&gt;</span><br><span class="line">&lt;build&gt;</span><br><span class="line">&lt;finalName&gt;Tomcat8.0&lt;/finalName&gt;</span><br><span class="line">&lt;sourceDirectory&gt;java&lt;/sourceDirectory&gt;</span><br><span class="line">&lt;testSourceDirectory&gt;test&lt;/testSourceDirectory&gt;</span><br><span class="line">&lt;resources&gt;</span><br><span class="line">&lt;resource&gt;</span><br><span class="line">&lt;directory&gt;java&lt;/directory&gt;</span><br><span class="line">&lt;/resource&gt;</span><br><span class="line">&lt;/resources&gt;</span><br><span class="line">&lt;testResources&gt;</span><br><span class="line">&lt;testResource&gt;</span><br><span class="line">&lt;directory&gt;test&lt;/directory&gt;</span><br><span class="line">&lt;/testResource&gt;</span><br><span class="line">&lt;/testResources&gt;</span><br><span class="line">&lt;plugins&gt;</span><br><span class="line">&lt;plugin&gt;</span><br><span class="line">&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;2.3&lt;/version&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;encoding&gt;UTF-8&lt;/encoding&gt;</span><br><span class="line">&lt;source&gt;1.8&lt;/source&gt;</span><br><span class="line">&lt;target&gt;1.8&lt;/target&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br><span class="line">&lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br><span class="line">&lt;dependencies&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;4.12&lt;/version&gt;</span><br><span class="line">	&lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.easymock&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;easymock&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;3.4&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;ant&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;ant&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.7.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;wsdl4j&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;wsdl4j&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.6.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;javax.xml&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;jaxrpc&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.eclipse.jdt.core.compiler&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;ecj&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;4.5.1&lt;/version&gt;</span><br><span class="line">&lt;dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-2-tomcat产品目录文件含义"><a href="#3-2-tomcat产品目录文件含义" class="headerlink" title="3.2 tomcat产品目录文件含义"></a>3.2 tomcat产品目录文件含义</h4><p>（1）bin：主要用来存放命令，.bat是windows下，.sh是Linux下<br>（2）conf：主要用来存放tomcat的一些配置文件<br>（3）lib：存放tomcat依赖的一些jar包<br>（4）logs：存放tomcat在运行时产生的日志文件<br>（5）temp：存放运行时产生的临时文件<br>（6）webapps：存放应用程序<br>（7）work：存放tomcat运行时编译后的文件，比如JSP编译后的文件<br>这块咱们就不详细去说了，因为在Javaweb中都学过，即使忘了一些文件或者文件夹的作用，网上介绍的一大堆</p>
+<h4 id="3-3-tomcat额外需知"><a href="#3-3-tomcat额外需知" class="headerlink" title="3.3 tomcat额外需知"></a>3.3 tomcat额外需知</h4><p>（1）Java语言写的<br>（2）servlet/jsp technologies</p>
+<h3 id="4-不妨手写一个mini的Tomcat"><a href="#4-不妨手写一个mini的Tomcat" class="headerlink" title="4 不妨手写一个mini的Tomcat"></a>4 不妨手写一个mini的Tomcat</h3><p>为什么要手写？既然上述提到了tomcat是java语言写的，又和servlet相关，那就自己设计一个试试，先不管作者的想法如<br>何</p>
+<h4 id="4-1-确定tomcat作用"><a href="#4-1-确定tomcat作用" class="headerlink" title="4.1 确定tomcat作用"></a>4.1 确定tomcat作用</h4><p>web服务器，说白了就是能够让客户端和服务端进行交互，比如客户端想要获取服务端某些资源，服务端可以通过<br>tomcat去进行一些处理并且返回。</p>
+<h4 id="4-2-基于Socket进行网络通信"><a href="#4-2-基于Socket进行网络通信" class="headerlink" title="4.2 基于Socket进行网络通信"></a>4.2 基于Socket进行网络通信</h4><p>实际上就是通过serversocket在服务端监听一个端口，等待客户端的连接，然后能够获取到对应的输入输出流<br><br><br><br>//基于网络编程socket套接字来做<br>class MyTomcat{<br>ServerSocket server=new ServerSocket(8080);<br>Socket socket=server.accept();<br>InputStream in=socket.getInputStream();<br>OutputStream out=socket.getOutputStream();<br>}</p>
+<h4 id="4-3-优化"><a href="#4-3-优化" class="headerlink" title="4.3 优化"></a>4.3 优化</h4><p>发现一个比较靠谱的tomcat已经被我们写出来了，问题是这个tomcat如果使用起来方便吗？你会发现不方便，因为对应的<br>request和response都放到了tomcat源码的内部，业务人员想要进行开发时，很难获得request对象，从而获得客户端传来的<br>数据，也不能进行很好的返回，怎么办呢？<br>我们发现在JavaEE中有servlet这项技术，比如我们进行登录功能业务代码开发时,写过如下这段代码和配置<br>所以不妨让tomcat也实现servlet规范，这时候手写的tomcat源码就可以做一个改变</p>
+<h4 id="4-4-手写版tomcat-servlets-真的可行吗？"><a href="#4-4-手写版tomcat-servlets-真的可行吗？" class="headerlink" title="4.4 手写版tomcat[servlets]真的可行吗？"></a>4.4 手写版tomcat[servlets]真的可行吗？</h4><p>换句话说：tomcat官方开发者对于用list集合保存项目中的servlets也是这样想的吗？我们可以从几个维度进行一下推测<br>//优化1:将输入输出流封装到对象<br>class MyTomcat{<br>ServerSocket server=new ServerSocket(8080);<br>Socket socket=server.accept();<br>InputStream in=socket.getInputStream();<br>new Request(in);<br>OutputStream out=socket.getOutputStream();<br>new Response(out);<br>}<br>class Request{private String host;private String accept-language;}<br>class Response{}<br>//优化2前奏：<br>class LoginServlet extends HttpServlet{<br>doGet(request,response){}<br>doPost(request,response){}<br>}</p>
+<p><servlet></servlet></p>
+<p><servlet-name>LoginServlet</servlet-name></p>
+<p><servlet-class>com.gupao.web.servlet.SimpleServlet</servlet-class><br></p>
+<p><servlet-mapping></servlet-mapping></p>
+<p><servlet-name>LoginServlet</servlet-name></p>
+<p><url-pattern>/login</url-pattern><br><br>//优化2：<br>class MyTomcat{<br>List list=new ArrayList();<br>ServerSocket server=new ServerSocket(8080);<br>Socket socket=server.accept();<br>//也就是这个地方不是直接处理request和response<br>//而是处理一个个servlets<br>list.add(servlets);<br>}<br>4.4.1 servlet之业务代码<br>业务代码中关于servlet想必大家都配置过，或者用注解的方式，原本开发web应用就采用的是这样的方式。你的<br>controller中有很多自己写的servlet，都继承了HttpServlet类，然后web.xml文件中配置过所有的servlets，也就<br>是mapping映射，这个很简单。<br>4.4.2 servlet之产品角度<br>如果apache提供的tomcat也这么做了，势必也要跟servlet规范有关系，也就是要依赖servlet的jar包，我们来看一<br>下在tomcat产品的bin文件夹之下有没有servlet.jar，发现有。<br>4.4.3 servlet之源码角度<br>最后我们如果能够在tomcat源码中找到载入servlets的依据，就更加能说明问题了<br>于是我们在idea中的tomcat8.0源码，关键是到哪里找呢？总得有个入口吧？源码中除了能够看到各种Java类型的<br>文件之外，一脸懵逼，怎么办？<br>不妨先跳出来想想，如果我们是tomcat源码的设计者，也就是上述手写的代码，我们怎么将业务代码中的servlets<br>加载到源码中？我觉得可以分为两步<br>（1）加载web项目中的web.xml文件，解析这个文件中的servlet标签，将其变成java中的对象<br>（2）在源码中用集合保存<br>注意第（1）步，为什么是加载web.xml文件呢？因为要想加载servlets，一定是以web项目为单位的，而一个web项目中有多<br>少个servlet类，是会配置在web.xml文件中的。<br>寻找和验证<br>加载和解析web.xml文件<br>加载：ContextConfig.webConfig()—&gt;getContextWebXmlSource()—&gt;Constants.ApplicationWebXml<br>解析：ContextConfig.webConfig()—&gt;configureContext(webXml)—&gt;context.createWrapper()<br>将servlets加载到list集合中<br>StandardContext.loadOnStartup(Container children[])—&gt;list.add(wrapper)<br>4.4.4 加载servlets的疑惑<br>怎么知道上面找的过程的？<br>我们会发现上面加载web.xml文件和添加servlets都和Context有点关系，因为都有这个单词，那这个Context大家<br>眼熟吗？其实我们见过，比如你把web项目想要供外界访问时，你会添加web项目到webapps目录，这是tomcat<br>的规定，除此之外，还可以在conf/server.xml文件中配置Context标签。<br>按照经验之谈，一般框架的设计者都会提供一两个核心配置文件给我们，比如server.xml就是tomcat提供给我们的，而这些<br>文件中的标签属性最终会对应到源码的类和属性<br>4.5 手写版tomcat[监听端口]可行吗？<br>换句话说：tomcat官方开发者对于监听端口也是这么设计的吗<br>其实我们手写的tomcat这块有两个核心：第一是监听端口，第二是添加servlets，上面解决了添加servlets。<br>接下来显然我们有必要验证一下监听端口tomcat也是这么做的吗？<br>4.5.1 监听端口之画图<br>上述的课堂中呈现出来的最好只有MyTomcat和Connector这块，其他先不管<br>在tomcat这块左边一定会监听在某个端口，等待客户端的连接，不然所有的操作都没办法进行交互<br>4.5.2 监听端口之源码角度<br>Connector.initInternal()-&gt;protocolHandler.init()-&gt;AbstractProtocol.init()-&gt;endpoint.init()-&gt;bind()-</p>
+<blockquote>
+<p>Apr,JIo,NIO,NIO2-&gt;JIo即Socket实现方式<br>4.5.3 监听端口的疑惑<br>为什么知道找Connector?<br>再次回到conf/web.xml文件，发现有一个Connector标签，而且还可以配置port端口，我们能够联想到监听端口，<br>按照配置文件到源码类的经验，源码中一定会有这样一个Connector类用于端口的监听。<br>4.6 完善自己的tomcat架构图<br>4.7 推导出tomcat架构图<br>conclusion：架构图<--->server.xml<--->源码 三者有一一对应的关系<br>5 折腾Tomcat架构和源码<br>5.1 认识强化主要组件的含义<br>官网:Documentation/Tomcat8.0/Apache Tomcat Development/Architecture/Overview<br>Server<br>Service<br>Engine<br>In the Tomcat world, a Server represents the whole container. Tomcat provides a default<br>implementation of the Server interface which is rarely customized by users.<br>A Service is an intermediate component which lives inside a Server and ties one or more<br>Connectors to exactly one Engine. The Service element is rarely customized by users, as the<br>default implementation is simple and sufficient: Service interface.Engine<br>Host<br>Connector<br>Context<br>5.2 它们是如何协同工作的？<br>换句话说：之前找了两个点，监听端口，加载servlets的调用过程是如何的？<br>比如bind(),loadOnstartup()到底谁来调用？<br>此时大家还是要回归到最初的流程，客户端发起请求到得到响应来看。<br>客户端角度：发起请求，最终得到响应<br>tomcat代码角度：虽然是要监听端口和添加servlets进来，但是肯定有一个主函数，从主函数开始调用<br>说白了，如果我是源码设计者，既然架构图我都了解了，肯定是要把这些组件初始化出来，然后让它们一起工作，<br>也就是：<br>初始化一个个组件<br>利用这些组件进行相应的操作<br>5.2.1 寻找源码开始的地方<br>An Engine represents request processing pipeline for a specific Service. As a Service may<br>have multiple Connectors, the Engine receives and processes all requests from these<br>connectors, handing the response back to the appropriate connector for transmission to the<br>client. The Engine interface may be implemented to supply custom Engines, though this is<br>uncommon.<br>Note that the Engine may be used for Tomcat server clustering via the jvmRoute parameter.<br>Read the Clustering documentation for more information.<br>A Host is an association of a network name, e.g. <a href="http://www.yourcompany.com" target="_blank" rel="noopener">www.yourcompany.com</a>, to the Tomcat server.<br>An Engine may contain multiple hosts, and the Host element also supports network aliases<br>such as yourcompany.com and abc.yourcompany.com. Users rarely create custom Hosts because<br>the StandardHost implementation provides significant additional functionality.<br>A Connector handles communications with the client. There are multiple connectors available<br>with Tomcat. These include the HTTP connector which is used for most HTTP traffic,<br>especially when running Tomcat as a standalone server, and the AJP connector which<br>implements the AJP protocol used when connecting Tomcat to a web server such as Apache<br>HTTPD server. Creating a customized connector is a significant effort.<br>A Context represents a web application. A Host may contain multiple contexts, each with a<br>unique path. The Context interface may be implemented to create custom Contexts, but this<br>is rarely the case because the StandardContext provides significant additional<br>functionality.<br>一定有一个类，这个类中有main函数开始，这样才能有一款java源码到产品，一贯的作风。<br>感性的认知： BootStrap -&gt;main()-&gt;根据脚本命令-&gt;startd<br>daemon.load() 加载<br>daemon.start() 启动<br>果然被我们找到了，先加载再启动，那就继续看咯<br>5.2.2 加载:daemon.load()的过程<br>Bootstrap.main()-&gt;Bootstrap.load()-&gt;Catalina.load()-&gt;初始化的依据是什么？考虑coder的设计server.xml<br>-&gt;Lifecycle.init()-&gt;LifecycleBase.init()-&gt;LifecycleBase.initInternal()-&gt;StandardServer.initInternal()<br>-&gt;services[i].init()-&gt;StandardService.initInternal()-&gt;executor.init()/ connector.init()<br>-&gt;LifecyleBase.initInternal()-&gt;Connector.initInternal()-&gt;protocolHandler.init()-&gt;AbstractProtocol.init()<br>-&gt;endpoint.init()-&gt;bind()-&gt;Apr,JIo,NIO,NIO2<br>conclusion:请求目前没有来，只是内部的初始化工作<br>5.2.3 启动:daemon.start()的过程<br>Bootstrap.start()-&gt;Catalina.start()-&gt;getServer.start()-&gt;LifecycleBase.start()-&gt;LifecycleBase.startInternal()<br>-&gt;StandardServer.startInternal()-&gt;services[i].start()-&gt;StandardService.startInternal()<br>-&gt; container.start()[查看一下Container接口] /executors.init()/connectors.start()-&gt;engine.start()-<br>StandardEngine.startInternal()<br>查看一下StandardEngine类关系结构图，发现ContainerBase是它的爸爸，而这个爸爸有多少孩子呢？<br>-&gt;super[ContainerBase].startInternal()-&gt;代码呈现<br>关注到new StartChild(children[i])—&gt;child.start()，也就是会调用Engine子容器的start方法，那子容器是什么呢？<br>Host，child.start-&gt;LifecycleBase.start()-&gt;startInternal()-&gt;StandardHost.startInternal()<br>Host将一个个web项目加载进来<br>StandardHost.startInternal()-&gt;ContainerBase.startInternal()-&gt;最后threadStart()<br>-&gt;new Thread(new ContainerBackgroundProcessor())-&gt; run()[processChildren(ContainerBase.this)]<br>-&gt;container.backgroundProcess()-&gt;ContainerBase.backgroundProcess()<br>-&gt;fireLifecycleEvent(Lifecycle.PERIODIC_EVENT, null)-&gt;listener.lifecycleEvent(event)<br>-&gt;interested[i].lifecycleEvent(event)-&gt;监听器HostConfig-&gt;HostConfig.lifecycleEvent(LifecycleEvent event)<br>-&gt;check()-&gt; deployApps()<br>Engine,Host,Context,Wrapper都是它的孩子<br>results.add(startStopExecutor.submit(new StartChild(children[i])))<br>回到StandardHost.startInternal() -&gt;super.startInternal()<br>results.add(startStopExecutor.submit(new StartChild(children[i])));<br>然后又会调用它的子容器-&gt;super.startInternal()-&gt;StandardContext.initInternal()<br>StandardContext.startInternal()解析每个web项目<br>ContextConfig.webConfig()的step9解析到servlets包装成wrapper对象<br>何时调用loadOnstartup()<br>StandardContext.startInternal()-&gt;最终会调用if (!loadOnStartup(findChildren()))<br>5.3 官网验证上述流程<br>5.3.1 Server Startup<br>Documentation/Tomcat8.0/Apache Tomcat Development/Architecture/Server Startup:Server Startup<br>5.3.2 Request Process<br>Documentation/Tomcat8.0/Apache Tomcat Development/Architecture/Request Process:UML sequence<br>diagram<br>6 Tomcat性能优化思路<br>6.1 优化思路过渡<br>上面说了这么多，接下来咱们就来聊聊tomcat的性能优化，那怎么进行优化？哪些方面需要进行优化？先有一个<br>整体的认知。<br>其实还是要回归到问题的本质，一个客户端的连接请求响应的流程，看看这个过程经历了什么，哪些地方能够优<br>化。<br>当然，我要补充的一点是，服务器的CPU、内存、硬盘等对性能有决定性的影响，硬件这块配置越高越好。<br>再次看tomcat architecture ：<br>// Deploy XML descriptors from configBase<br>deployDescriptors(configBase, configBase.list());<br>// Deploy WARs<br>deployWARs(appBase, filteredAppPaths);<br>// Deploy expanded folders<br>deployDirectories(appBase, filteredAppPaths);<br>fireLifecycleEvent(Lifecycle.CONFIGURE_START_EVENT, null)-&gt;listener.lifecycleEvent(event)<br>interested[i].lifecycleEvent(event)-&gt;[找实现]ContextConfig.lifecycleEvent(LifecycleEvent event)-<br>configureStart()-&gt;webConfig()-&gt;解析每个web项目的xml文件了-&gt;getContextWebXmlSource()-<br>Constants.ApplicationWebXml<br>发现客户端的连接请求会和Connector打交道，对于Connector可以进行选择，比如Http Connector，A JP<br>Connector。<br>整体介绍:Documentation/Tomcat8.0/User Guide/21)Connectors链接<br>详细介绍:Documentation/Tomcat8.0/Reference/Configuration/Connectors链接<br>Executor<br>介绍:Documentation/Tomcat8.0/Reference/Configuration/Executors链接<br>Context<br>介绍:Documentation/Tomcat8.0/Reference/Configuration/Containers/Context链接<br>Context中加载web.xml文件时的源码<br>处理一些过滤器，全局servlet，session等等这些有一个全局的web.xml文件，在conf目录下，源码中会将两<br>者进行合并处理。<br>conclusion:要想改变上面这些内容，适当进行调整，咱们去修改tomcat源码显然不合适，那怎么修改呢？tomcat给我们提<br>供了可以进行定制自己组建的相关配置文件，比如说conf目录下的server.xml和web.xml文件,也就是说我们可以站在修改配<br>置文件的角度进行性能优化<br>继续思考tomcat性能优化思路<br>既然tomcat是Java写的，最终这些代码是会跑到jvm虚拟机中的，也就是说jvm的一些优化思路也可以在tomcat中<br>进行落实。<br>6.2 配置优化<br>由前面的分析可以定位目前两个重要的配置文件conf/server.xml conf/web.xml<br>6.2.1 conf/server.xml核心组件<br>Server<br>官网描述:Server interface which is rarely customized by users. 【pass】<br>Service<br>官网描述:The Service element is rarely customized by users. 【pass】<br>Connector<br>官网描述:Creating a customized connector is a significant effort. 【need 】<br>Engine<br>官网描述:The Engine interface may be implemented to supply custom Engines, though this is uncommon.<br>【pass】<br>Host<br>官网描述:Users rarely create custom Hosts because the StandardHost implementation provides significant<br>additional functionality. 【pass】<br>Context<br>官网描述:The Context interface may be implemented to create custom Contexts, but this is rarely the case<br>because the StandardContext provides significant additional functionality. 【maybe 】<br>Context既然代表的是web应用，是和我们比较接近的，这块我们考虑对其适当的优化<br>conclusion:Connector and Context<br>6.2.2 conf/server.xml非核心组件<br>官网:Documentation/Reference/Configuration/Nested Components/xxx<br>Listener<br>Global Resources<br>The GlobalNamingResources element defines the global JNDI resources for the [Server]<br>(<a href="https://tomcat.apache.org/tomcat-8.0-doc/config/server.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-8.0-doc/config/server.html</a>)<br>Valve<br>功能类似于过滤器Filter<br>Realm<br>Listener(即监听器)定义的组件，可以在特定事件发生时执行特定的操作；被监听的事件通常是Tomcat的启动和停止。</---></---></p>
+</blockquote>
+<p><listener classname="org.apache.catalina.core.AprLifecycleListener" sslengine="on"><br><!--监听内存溢出--></listener></p>
+<p><listener classname="org.apache.catalina.core.JreMemoryLeakPreventionListener"></listener></p>
+<p><listener classname="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"></listener></p>
+<p><listener classname="org.apache.catalina.core.ThreadLocalLeakPreventionListener"><br>GlobalNamingResources元素定义了全局资源，通过配置可以看出，该配置是通过读取$TOMCAT_HOME/ conf/tomcatusers.<br>xml实现的。</listener></p>
+<p><globalnamingresources></globalnamingresources></p>
+<p><resource name="UserDatabase" auth="Container" type="org.apache.catalina.UserDatabase" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" pathname="conf/tomcat-users.xml"><br></resource></p>
+<p><valve classname="org.apache.catalina.valves.AccessLogValve" directory="logs" prefix="localhost_access_log" suffix=".txt" pattern="%h %l %u %t &quot;%r&quot; %s %b"><br>A Realm element represents a “database” of usernames, passwords, and roles (similar to Unix groups)<br>assigned to those users.<br>6.2.3 conf/web.xml<br>全局的web.xml文件有些标签用不到的，可以删除掉，具体后面会说。<br>6.3 JVM优化<br>6.3.1 内存设置<br>为了防止内存不够用，显然可以设置一下内存的大小<br>6.3.2 GC算法<br>选择合适的GC算法，其实内存大小的设置也会影响GC<br>6.4 小结<br>减少相关配置-&gt;查看日志tomcat启动时间<br>项目方法:Connector-&gt;BIO/NIO/APR-&gt;压测某个项目的方法观察Throughout<br>JVM :jconsole,gceasy.io,jvisual<br>7 相关环境准备<br>7.1 windows<br>jdk1.8<br>maven<br>git<br>idea<br>tomcat8.0<br>Realm，可以把它理解成“域”；Realm提供了一种用户密码与web应用的映射关系，从而达到角色安全管理的作用。在本<br>例中，Realm的配置使用name为UserDatabase的资源实现。而该资源在Server元素中使用GlobalNamingResources配<br>置</valve></p>
+<p><realm classname="org.apache.catalina.realm.LockOutRealm"><br><!-- This Realm uses the UserDatabase configured in the global JNDI
+resources under the key "UserDatabase". Any edits
+that are performed against this UserDatabase are immediately
+available for use by the Realm. --></realm></p>
+<p><realm classname="org.apache.catalina.realm.UserDatabaseRealm" resourcename="UserDatabase"><br></realm><br>Xshell<br>jmeter<br>用于本地压测观察<br>ftp/rzsz<br>用于本地和远端文件交互<br>7.2 centos7<br>本地搭建或者购买阿里云服务器安装centos系统<br>jdk1.8<br>本地上传到生产环境,解压配置环境变量<br>maven<br>本地上传到生产环境,解压配置环境变量<br>tomcat8.0<br>本地上传到生产环境,解压配置环境变量<br>如果tomcat启动慢，则catalina.sh的JAVA_OPTS加入-Djava.security.egd=file:/dev/./urandom<br>7.3 一个web项目<br>7.4 JVisualVM监控java进程<br>（1）命令行输入jvisualvm<br>（2）选择本地的java进程【本地无需任何设置，直接连接即可】<br>（3）监控远程tomcat<br>输入远程ip地址，修改远端的catalina.sh文件，添加如下内容<br>这是我上课用的账号和密码，只有一个月有效期<br>ip地址:39.98.168.189<br>账户:root<br>密码:AAbb1234<br>项目名称:gp/index.html<br>项目介绍:<br>其实就是一个静态页面，接下来就是对这个页面进行压测<br>JAVA_OPTS=”$JAVA_OPTS -Dcom.sun.management.jmxremote<br>-Djava.rmi.server.hostname=39.98.168.189 -Dcom.sun.management.jmxremote.port=8998<br>-Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true<br>-Dcom.sun.management.jmxremote.password.file=../conf/jmxremote.password<br>-Dcom.sun.management.jmxremote.access.file=../conf/jmxremote.access”<br>然后在jvisualvm中添加远程连接，JMX类型<br>采坑指南<br>查看hostname -i，修改/etc/hosts文件公网ip地址指向查询到的地址<br>lsof -i tcp:8998 得到PID<br>然后netstat -antup | grep PID 得到几个端口号，在阿里云安全组中添加相应端口<br>上述修改之后要重启远端的tomcat<br>添加JMX Connection，注意端口写8999<br>防火墙要记得添加对应的策略<br>在conf文件中添加两个文件jmxremote.access和jmxremote.password，内容分别为<br>授予文件相应权限: chmod 600 <em>jmxremot</em><br>7.5 tomcat-manager/probe<br>如果不想用jvisualvm来监控tomcat线程内存的信息，也可以选择tomcat自带的tomcat-manager或者probe来监<br>控，只是有些功能没有那么完善。<br>7.6 课程中常用命令<br>启动停止tomcat,来到tomcat的bin文件夹<br>启动: ./startup.sh<br>停止:./shutdown.sh<br>查看tomcat启动日志<br>cat ../logs/catalina.out<br>tail -f ../logs/catalina.out 相当于监控该日志文件<br>解压<br>tar -zxvf xxx<br>查看进程及端口号<br>查看进程: ps -ef | grep tomcat/java<br>端口号:lsof -i tcp:8080<br>杀掉进程<br>kill PID<br>查看jvm内所有线程<br>guest readonly<br>manager readwrite<br>guest guest<br>manager manager<br>jstack PID<br>官网线程状态描述<br>maven打包<br>mvn clean package<br>mvn clean package -Dmaven.test.skip<br>jinfo查看jvm某个参数是否启用<br>jinfo -flag UseParallelGC PID<br>jinfo -flag MaxHeapSize PID 查看最大内存<br>jinfo -flag UseG1GC PID 查看垃圾回收器<br>jinfo -flags PID 查看曾经赋过值的一些参数<br>查看java进程<br>jps -l<br>查看jvm统计信息<br>jstat -class/-gc PID 1000 10<br>导出内存信息<br>8 Tomcat性能优化<br>写的不错的一篇文章链接:资料<br>8.1 配置优化<br>8.1.1 减少web.xml/server.xml中标签<br>最终观察tomcat启动日志[时间/内容]，线程开销，内存大小，GC等<br>DefaultServlet<br>官网:User Guide-&gt;Default Servlet<br>The default servlet is the servlet which serves static resources as well as serves the directory listings (if<br>directory listings are enabled).<br>jmap -dump:format=b,file=heap.hprof pid<br>jmap -heap pid 打印出堆内存相关的信息</p>
+<p><servlet></servlet></p>
+<p><servlet-name>default</servlet-name></p>
+<p><servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class></p>
+<p><init-param></init-param></p>
+<p><param-name>debug</param-name></p>
+<p><param-value>0</param-value><br></p>
+<p><init-param><br>JspServlet<br>welcome-list-file<br>mime-mapping移除响应的内容<br>支持的下载打开类型</init-param></p>
+<p><param-name>listings</param-name></p>
+<p><param-value>false</param-value><br></p>
+<p><load-on-startup>1</load-on-startup><br></p>
+<p><servlet-mapping></servlet-mapping></p>
+<p><servlet-name>default</servlet-name></p>
+<p><url-pattern>/</url-pattern><br></p>
+<p><servlet></servlet></p>
+<p><servlet-name>jsp</servlet-name></p>
+<p><servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class></p>
+<p><init-param></init-param></p>
+<p><param-name>fork</param-name></p>
+<p><param-value>false</param-value><br></p>
+<p><init-param></init-param></p>
+<p><param-name>xpoweredBy</param-name></p>
+<p><param-value>false</param-value><br></p>
+<p><load-on-startup>3</load-on-startup><br></p>
+<p><servlet-mapping></servlet-mapping></p>
+<p><servlet-name>jsp</servlet-name></p>
+<p><url-pattern>*.jsp</url-pattern></p>
+<p><url-pattern>*.jspx</url-pattern><br></p>
+<p><welcome-file-list></welcome-file-list></p>
+<p><welcome-file>index.html</welcome-file></p>
+<p><welcome-file>index.htm</welcome-file></p>
+<p><welcome-file>index.jsp</welcome-file><br><br>session-config<br>默认jsp页面有session，就是在于这个配置<br>8.1.2 调整优化server.xml中标签<br>8.1.2.1 Connector标签<br>protocol属性<br>对于protocol=”HTTP/1.1”，查看源码<br>构造函数<br>setProtocol(protocol)因为配置文件中传入的是HTTP/1.1<br>并且这里没有使用APR，一会我们会演示APR</p>
+<p><mime-mapping></mime-mapping></p>
+<p><extension>123</extension></p>
+<p><mime-type>application/vnd.lotus-1-2-3</mime-type><br></p>
+<p><mime-mapping></mime-mapping></p>
+<p><extension>3dml</extension></p>
+<p><mime-type>text/vnd.in3d.3dml</mime-type><br></p>
+<p><session-config></session-config></p>
+<p><session-timeout>30</session-timeout><br></p>
+<p><connector port="8080" protocol="HTTP/1.1" connectiontimeout="20000" redirectport="8443"><br>public Connector(String protocol) {<br>setProtocol(protocol);<br>}<br>发现这里调用的是Http11NioProtocol，也就是说明tomcat8.0.x中默认使用的是NIO<br>使用同样的方式看tomcat7和tomcat8.5，你会发现tomcat7默认使用的是BIO，tomcat8.5默认使用的是NIO<br>针对BIO和NIO的方式进行压测<br>（1）BIO<br>来到tomcat官网Configuration/HTTP/protocol<br>org.apache.coyote.http11.Http11Protocol - blocking Java connector<br>org.apache.coyote.http11.Http11NioProtocol - non blocking Java NIO connector<br>org.apache.coyote.http11.Http11Nio2Protocol - non blocking Java NIO2 connector<br>org.apache.coyote.http11.Http11AprProtocol - the APR/native connector.<br>使用tomcat7取巧一下，默认是BIO，端口改成7070，将tomcat-optimize复制到tomcat7中<br>（2）NIO<br>tomcat8.0中默认使用的是NIO<br>针对上述BIO和NIO的方式，进行压测，调整并发数，看吞吐量<br>（3）APR<br>【具体查看操作手册/APR安装方式】<br>下载以下内容：<br>apr<br>apr-iconv<br>apr-util<br>并且上传到centos中<br>先安装一些依赖库: yum install apr<em> openssl-devel gcc make<br>安装apr<br>解压apr，cd到源码目录<br>./configure –prefix=/usr/local/apr 指定安装的目录<br>make 编译<br>make install 安装<br>else {<br>if (“HTTP/1.1”.equals(protocol)) {<br>setProtocolHandlerClassName<br>(“org.apache.coyote.http11.Http11NioProtocol”);<br>} else if (“AJP/1.3”.equals(protocol)) {<br>setProtocolHandlerClassName<br>(“org.apache.coyote.ajp.AjpNioProtocol”);<br>} else if (protocol != null) {<br>setProtocolHandlerClassName(protocol);<br>}<br>}<br>安装apr-iconv<br>解压apr-iconv，cd到源码目录<br>./configure –prefix==/usr/local/apr-iconv –with-apr=/usr/local/apr 使用了一下刚才的apr<br>make<br>make install<br>安装依赖包 yum install expat-devel<br>安装apr-util<br>解压apr-util,cd到源码目录<br>./configure –prefix=/usr/local/apr-util –with-apr=/usr/local/apr<br>make<br>make install<br>安装openssl 1.0.2k<br>解压，cd到源码目录<br>./config –prefix=/usr/local/openssl<br>修改Makefile文件，将CFLAG=-DOPENSSL_THREADS修改为CFLAG= -fPIC -DOPENSSL_THREADS<br>make<br>make install<br>来到tomcat的bin目录<br>解压tomcat-native.tar.gz<br>cd tomcat-native-1.x-src/jni/native<br>./configure –with-apr=/usr/local/apr –with-ssl=/usr/local/openssl<br>make<br>make install<br>配置bin/catalina.sh<br>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/apr/lib<br>export LD_LIBRARY_PATH<br>server.xml中的AprListener需要关闭SSL的方式，值设置为off<br>重新启动tomcat，看日志apr的方式<br>也可以压测看一下效果<br>executor属性<br>最佳线程数公式:((线程等待时间+线程cpu时间)/线程cpu时间) </em> cpu数量<br>设置一些属性<br>官网:<a href="https://tomcat.apache.org/tomcat-8.0-doc/config/http.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-8.0-doc/config/http.html</a><br>The Executor represents a thread pool that can be shared between components in Tomcat.<br>Historically there has been a thread pool per connector created but this allows you to share a<br>thread pool, between (primarily) connector but also other components when those get configured<br>to support executors<br>（1）acceptCount:达到最大连接数之后，等待队列中还能放多少连接，超过即拒绝，配置太大也没有意义<br>The maximum queue length for incoming connection requests when all possible request processing<br>threads are in use. Any requests received when the queue is full will be refused. The default<br>value is 100.<br>（2）maxConnections<br>达到这个值之后，将继续接受连接，但是不处理，能继续接受多少根据acceptCount的值<br>BIO:maxThreads<br>NIO/NIO2:10000 ——— AbstractEndpoint.maxConnections<br>APR:8192<br>The maximum number of connections that the server will accept and process at any given time. When<br>this number has been reached, the server will accept, but not process, one further connection.<br>This additional connection be blocked until the number of connections being processed falls below<br>maxConnections at which point the server will start accepting and processing new connections<br>again. Note that once the limit has been reached, the operating system may still accept<br>connections based on the acceptCount setting. The default value varies by connector type. For BIO<br>the default is the value of maxThreads unless an Executor is used in which case the default will<br>be the value of maxThreads from the executor. For NIO and NIO2 the default is 10000. For<br>APR/native, the default is 8192.<br>Note that for APR/native on Windows, the configured value will be reduced to the highest multiple<br>of 1024 that is less than or equal to maxConnections. This is done for performance reasons.<br>If set to a value of -1, the maxConnections feature is disabled and connections are not counted.<br>（3）maxThreads:最大工作线程数，也就是用来处理request请求的，默认是200，如果自己配了executor，并且<br>和Connector有关联了，则之前默认的200就会被忽略，取决于CPU的配置。监控中就可以看到所有的工作线程是<br>什么状态，通过监控就能知道开启多少个线程合适<br>The maximum number of request processing threads to be created by this Connector, which therefore<br>determines the maximum number of simultaneous requests that can be handled. If not specified,<br>this attribute is set to 200. If an executor is associated with this connector, this attribute is<br>ignored as the connector will execute tasks using the executor rather than an internal thread<br>pool. Note that if an executor is configured any value set for this attribute will be recorded<br>correctly but it will be reported (e.g. via JMX) as -1 to make clear that it is not used.<br>（4）minSpareThreads<br>最小空闲线程数<br>The minimum number of threads always kept running. This includes both active and idle threads. If<br>not specified, the default of 10 is used. If an executor is associated with this connector, this<br>attribute is ignored as the connector will execute tasks using the executor rather than an<br>internal thread pool. Note that if an executor is configured any value set for this attribute<br>will be recorded correctly but it will be reported (e.g. via JMX) as -1 to make clear that it is<br>not used.<br>可以实践一下，Connector配合自定义的线程池<br>其实这块最好的方式是结合BIO来看，因为BIO是一个request对应一个线程<br>值太低，并发请求多了之后，多余的则进入等待状态。<br>值太高，启动Tomcat将花费更多的时间。<br>比如可以改成250。<br>enableLookups<br>设置为false<br>删掉A JP的Connector<br>8.1.2.2 Host标签<br>autoDeploy :Tomcat运行时，要用一个线程拿出来进行检查，生产环境之下一定要改成false<br>This flag value indicates if Tomcat should check periodically for new or updated web applications<br>while Tomcat is running. If true, Tomcat periodically checks the appBase and xmlBase directories<br>and deploys any new web applications or context XML descriptors found. Updated web applications<br>or context XML descriptors will trigger a reload of the web application. The flag’s value<br>defaults to true. See Automatic Application Deployment for more information.<br>8.1.2.3 Context标签<br>reloadable:false<br>reloadable:如果这个属性设为true，tomcat服务器在运行状态下会监视在WEB-INF/classes和WEB-INF/lib目录下<br>class文件的改动，如果监测到有class文件被更新的，服务器会自动重新加载Web应用。<br>在开发阶段将reloadable属性设为true，有助于调试servlet和其它的class文件，但这样用加重服务器运行负荷，建议<br>在Web应用的发存阶段将reloadable设为false。<br>Set to true if you want Catalina to monitor classes in /WEB-INF/classes/ and /WEB-INF/lib for<br>changes, and automatically reload the web application if a change is detected. This feature is<br>very useful during application development, but it requires significant runtime overhead and is<br>not recommended for use on deployed production applications. That’s why the default setting for<br>this attribute is false. You can use the Manager web application, however, to trigger reloads of<br>deployed applications on demand.</connector></p>
+<p><connector executor="tomcatThreadPool" port="8080" protocol="HTTP/1.1" connectiontimeout="20000" redirectport="8443"></connector></p>
+<p><executor name="tomcatThreadPool" nameprefix="catalina-exec-" maxthreads="150" minsparethreads="4"><br>8.2 JVM优化<br>8.2.1 JVM优化过渡<br>为什么会有JVM这块的优化？因为tomcat是java语言写的，那么对于jvm这块的优化在tomcat中就是适用的。比如<br>修改一些参数，调整内存大小，选择合适的垃圾回收算法等等。<br>现在有个问题，修改JVM参数在哪里修改会对tomcat生效？还是在bin文件夹之下，有一个catalina.sh，找到<br>JAVA_OPTS即可，当然不建议对此文件进行直接修改，一般是在外面新建一个文件，然后引入进来，我们就不这样<br>做了，直接修改bin/catalina.sh 文件。<br>8.2.2 运行时数据区和内存结构<br>既然要对内存的大小做调整设置，你得认知一下jvm这块的内容，这里之前James老师的公开课和VIP课中讲过，当<br>然你没听过也没关系，可以回头听一下，而且后面大白老师也会和大家讲这块的内容。<br>结论:接下来我也站在我的角度和大家做一个简单的分享，这有利于接下来我们tomcat的jvm调优。<br>运行时数据区是一个规范，内存结构是一个实际的实现<br>运行时数据区<br>官网:官网<br>（1）程序计数器The pc Register<br>JVM支持多线程同时执行，每一个线程都有自己的pc register，线程正在执行的方法叫做当前方法。如果是java代<br>码，pc register中存放的就是当前正在执行的指令的地址，如果是c代码，则为空。<br>（2）Java虚拟机栈Java Virtual Machine Stacks<br>Java虚拟机栈是线程私有的，它的生命周期和线程相同。虚拟机栈描述的是Java方法执行的内存模型:每个方法在执<br>行的同时都会创建一个栈帧，用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直<br>到执行完成的过程，就对应着一个栈帧在虚拟机栈中入栈到出栈的过程。<br>（3）堆Heap<br>Java堆是Java虚拟机所管理的内存中最大的一块。对是被所有线程共享的一块内存区域，在虚拟机启动时创建。次<br>内存区域的唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存。<br>Java对可以处于物理上不连续的内存空间中，只要逻辑上市连续的即可。<br>（4）方法区Method Area<br>方法区和Java堆一样，是各个线程共享的内存区域，也是在虚拟机启动时创建。它用于存储已被虚拟机加载的类信<br>息、常量、静态变量、即时编译器编译后的代码等数据。虽然Java虚拟机规范把方法区描述为堆的一个逻辑部分，<br>但是它却有一个别名叫做Non-Heap(非堆)，目的是与Java堆区分开来。<br>jdk1.8中就是metaspace<br>jdk1.6或者1.7中就是perm space<br>运行时常量池Runtime Constant Pool是方法区的一部分，Class文件中除了有类的版本、字段、方法、接口等描述<br>信息外，还有一项信息就是常量池，用于存放编译时期生成的各种字面量和符号引用，这部分内容将在类加载后进<br>入方法区的运行时常量池中存放。<br>（5）本地方法栈Native Method Stacks<br>本地方法栈和虚拟机栈锁发挥的作用是非常相似的，它们之间的区别不过是虚拟机栈执行Java方法服务，而本地方<br>法栈则为虚拟机使用到的native方法服务。<br>内存结构<br>上面对运行时数据区描述了很多，其实重点存储数据的是堆和方法区(非堆)，所以我们内存结构的设计也是着重从<br>这两方面展开的。<br>一块是非堆区，一块是堆区。<br>堆区分为两大块，一个是Old区，一个是Young区。<br>Young区分为两大块，一个是Survival区（S0+S1），一块是Eden区。 Eden:S0:S1=8:1:1<br>S0和S1一样大，也可以叫From和To。<br>在同一个时间点上，S0和S1只能有一个区有数据，另外一个是空的。<br>8.2.3 垃圾回收算法<br>为什么需要学习垃圾回收算法？<br>Java是做自动内存管理的，自动垃圾回收。<br>如何确定一个对象是否是垃圾，从而确定是否需要回收？<br>（1）引用计数<br>对于某个对象而言，只要应用程序中持有该对象的引用，就说明该对象不是垃圾，如果一个对象没有任何指针对其<br>引用，它就是垃圾。<br>弊端:AB相互持有引用，导致永远不能被回收。<br>（2）枚举根节点做可达性分析<br>能作为根节点的:类加载器、Thread、虚拟机栈的本地变量表、static成员、常量引用、本地方法栈的变量等。<br>常量的垃圾回收算法<br>能够确定一个对象是垃圾之后，怎么回收？得要有对应的算法<br>（1）标记清除<br>先标记所有需要回收的对象，然后统一回收。<br>缺点:效率不高，标记和清除两个过程的效率都不高，容易产生碎片，碎片太多会导致提前GC。<br>（2）复制<br>将内存按容量划分为大小相等的两块(S0和S1)，每次只使用其中一块。<br>当这块使用完了，就讲还存活的对象复制到另一块上，然后再把已经使用过的内存空间一次性清除掉【Young区此<br>采用的是复制算法】<br>优缺点:实现简单，运行高效，但是空间利用率低。<br>（3）标记整理<br>标记需要回收的对象，然后让所有存活的对象移动到另外一端，直接清理掉端边界意外的内存。<br>JVM中采用的是分代垃圾回收<br>换句话说，堆中的Old区和Young区采用的垃圾回收算法是不一样的。<br>（1）Young区：复制算法<br>（2）Old区：标记清除或标记整理<br>对象在被分配之后，可能声明周期比较短，Young区复制效率比较高。<br>Old区对象存活时间比较长，复制来复制去没必要，不如做个标记。<br>对象分配方式<br>对象优先分配在Eden区<br>大对象直接进入老年代，多大的对象称为大对象？可以通过JVM参数指定 -XX:PretenureSizeThreshold<br>长期存活对象进入老年代<br>8.2.4 垃圾收集器<br>串行收集器Serial:Serial、Serial Old<br>一个线程跑，停止，启动垃圾回收线程，回收完成，继续执行刚才暂停的线程。适用于内存比较小的嵌入式<br>设备中。<br>并行收集器Parallel:Parallel Scavenge、Parallel Old，吞吐量优先<br>多条垃圾收集线程并行工作，但此时用户线程仍然处于等待状态，适合科学计算、后台处理等弱交互场景<br>并发收集器Concurrent:CMS、G1，停顿时间优先<br>用户线程和垃圾收集线程同时执行(但不一定是并行的，可能会交替执行)，垃圾收集线程在执行的时候不会停<br>顿用户程序的运行。适合于对相应时间有要求的场景，比如Web。<br>吞吐量和停顿时间解释<br>吞吐量:花在垃圾收集的时间和花在应用程序时间的占比<br>停顿时间:垃圾收集器做垃圾回收终端应用执行的时间<br>小结: 评价一个垃圾回收器的好坏，其实调优的时候就是在观察者两个变量<br>开启垃圾收集器<br>Young区和Old区适用的垃圾回收器<br>jdk1.8中比较推荐使用G1垃圾回收器，性能比较高。<br>常用的G1 Collector<br>jdk1.7开始使用，jdk1.8非常成熟，jdk1.9默认的垃圾收集器<br>要求:&gt;=6GB,停顿时间小于0.5秒<br>适用于新老生代<br>（1）串行： -XX：+UseSerialGC -XX：+UseSerialOldGC 新老生代<br>（2）并行(吞吐量优先)：<br>-XX：+UseParallelGC<br>-XX：+UseParallelOldGC<br>（3）并发收集器(响应时间优先)<br>CMS： -XX：+UseConcMarkSweepGC<br>G1： -XX：+UseG1GC<br>是否需要用G1的判断依据<br>（1）50%以上的堆被存活对象占用<br>（2）对象分配和晋升的速度变化非常大<br>（3）垃圾回收时间比较长<br>如何选择合适的垃圾回收器<br>（1）优先调整堆的大小让服务器自己来选择<br>（2）如果内存小于100M，使用串行收集器<br>（3）如果是单核，并且没有停顿时间要求，使用串行或JVM自己选<br>（4）如果允许停顿时间超过1秒，选择并行或JVM自己选<br>（5）如果响应时间最重要，并且不能超过1秒，使用并发收集器<br>8.2.5 两款GC日志分析工具<br>评价一个垃圾回收器的好坏：吞吐量和停顿时间<br>要想分析，得把GC日志打印出来才行，可以在tomcat中catalina.sh JAVA_OPTS配置相关参数<br>XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -<br>Xloggc:$CATALINA_HOME/logs/gc.log<br>然后重启tomcat，下载下来看看内容<br>在线:<a href="http://gceasy.io" target="_blank" rel="noopener">http://gceasy.io</a><br>上述日志直接看比较费力，不妨借助工具，把gc.log下载到本地，然后上传到gceasy.io<br>可以比较不同的垃圾回收器的日志情况<br>GCViewer<br>8.2.6 内存模型和GC联系<br>Minor GC:新生代<br>Major GC:老年代<br>Full GC:新生代+老年代<br>一个对象的一辈子-概要<br>一般情况下,新创建的对象都会被分配到Eden区(一些大对象特殊处理),这些对象经过第一次Minor GC后,如果仍然存活,<br>将会被移到Survivor区。对象在Survivor区中每熬过一次Minor GC,年龄就会增加1岁,当它的年龄增加到一定程度时,就<br>会被移动到年老代中。<br>一个对象的一辈子-理论<br>在GC开始的时候,对象只会存在于Eden区和名为“From”的Survivor区,Survivor区“To”是空的。紧接着进行GC,Eden区中<br>所有存活的对象都会被复制到“To”,而在“From”区中,仍存活的对象会根据他们的年龄值来决定去向。年龄达到一定值(年<br>龄阈值,可以通过-XX:MaxTenuringThreshold来设置)的对象会被移动到年老代中,没有达到阈值的对象会被复制<br>到“To”区域。经过这次GC后,Eden区和From区已经被清空。这个时候,“From”和“To”会交换他们的角色,也就是新<br>的“To”就是上次GC前的“From”,新的“From”就是上次GC前的“To”。不管怎样,都会保证名为To的Survivor区域是空的。<br>Minor GC会一直重复这样的过程,直到“To”区被填满,“To”区被填满之后,会将所有对象移动到年老代中。<br>一个对象的一辈子-案例<br>我是一个普通的Java对象,我出生在Eden区,在Eden区我还看到和我长的很像的小兄弟,我们在Eden区中玩了挺长时间。有<br>一天Eden区中的人实在是太多了,我就被迫去了Survivor区的“From”区,自从去了Survivor区,我就开始漂了,有时候在<br>Survivor的“From”区,有时候在Survivor的“To”区,居无定所。直到我18岁的时候,爸爸说我成人了,该去社会上闯闯了。<br>于是我就去了年老代那边,年老代里,人很多,并且年龄都挺大的,我在这里也认识了很多人。在年老代里,我生活了20年(每<br>次GC加一岁),然后被回收。<br>为什么会有Survival区<br>如果没有Survivor,Eden区每进行一次Minor GC,存活的对象就会被送到老年代。老年代很快被填满,触发Major GC(因为<br>Major GC一般伴随着Minor GC,也可以看做触发了Full GC)。老年代的内存空间远大于新生代,进行一次Full GC消耗的<br>时间比Minor GC长得多。你也许会问,执行时间长有什么坏处?频发的Full GC消耗的时间是非常可观的,这一点会影响大<br>型程序的执行和响应速度,更不要说某些连接会因为超时发生连接错误了。<br>增加老年代空间 更多存活对象才能填满老年代。降低Full GC频率 随着老年代空间加大,一旦发生Full GC,<br>执行所需要的时间更长<br>减少老年代空间 Full GC所需时间减少 老年代很快被存活对象填满,Full GC频率增加<br>Survivor的存在意义,就是减少被送到老年代的对象,进而减少Full GC的发生,Survivor的预筛选保证,只有经历16次<br>Minor GC还能在新生代中存活的对象,才会被送到老年代。<br>为什么会有两个Survival区<br>设置两个Survivor区最大的好处就是解决了碎片化,下面我们来分析一下。<br>为什么一个Survivor区不行?第一部分中,我们知道了必须设置Survivor区。假设现在只有一个survivor区,我们来模拟<br>一下流程:<br>刚刚新建的对象在Eden中,一旦Eden满了,触发一次Minor GC,Eden中的存活对象就会被移动到Survivor区。这样继续循<br>环下去,下一次Eden满了的时候,问题来了,此时进行Minor GC,Eden和Survivor各有一些存活对象,如果此时把Eden区的<br>存活对象硬放到Survivor区,很明显这两部分对象所占有的内存是不连续的,也就导致了内存碎片化。<br>永远有一个survivor space是空的,另一个非空的survivor space无碎片。<br>8.2.7 JVM常见参数<br>无论是设置内存大小还是选用不同的GC Collector都可以通过JVM参数的形式，所以我们有必要了解一下JVM参数<br>相关的内容。<br>标准参数<br>-help<br>-server -client<br>-version -showversion<br>-cp -classpath<br>X参数<br>非标准参数，也就是在jvm各个版本中可能会变<br>-Xint 解释执行<br>-Xcomp 第一次使用就编译成本地代码<br>-Xmixed 混合模式，JVM自己来决定是否编译成本地代码<br>XX参数<br>特殊参数<br>-Xmx -Xms 设置最大最小内存的<br>不是X参数，而是XX参数<br>-Xms等价于-XX:InitialHeapSize<br>-Xmx等价于-XX:MaxHeapSize<br>-Xss等价于-XX:ThreadStackSize<br>查看JVM运行时参数<br>得先知道当前的值是什么，然后才能设置调优<br>=表示默认值<br>:=表示被用户或JVM修改后的值<br>查看PID: jps -l，专门用来查看java进程的<br>jinfo 查看已经运行的jvm里面的参数值<br>jinfo -flag MaxHeapSize PID 查看最大内存<br>jinfo -flag UseG1GC PID 查看垃圾回收器<br>jinfo -flags PID 查看曾经赋过值的一些参数<br>jstat查看JVM统计信息<br>（1）类装载<br>jstat -class PID 1000 10<br>PID进程ID，1000每个一秒钟，10输出10次<br>（2）垃圾收集<br>jstat -gc PID 1000 10<br>平时用的最多的参数类型<br>非标准化参数，相对不稳定，主要用于JVM调优和Debug<br>a.Boolean类型<br>格式：-XX:[+-]<name> 表示启用或者禁用name属性<br>比如：-XX:+UseConcMarkSweepGC 表示启用CMS类型的垃圾回收器<br>-XX:+UseG1GC 表示启用CMS类型的垃圾回收器<br>b.非Boolean类型<br>格式：-XX<name>=<value>表示name属性的值是value<br>比如：-XX:MaxGCPauseMillis=500<br>S0C S1C S0U S1U EC EU OC OU GCT<br>2560.0 2560.0 0.0 2556.0 30720.0 29499.0 40960.0 11559.8 16512.0<br>MC MU CCSC CCSU YGC YGCT FGC FGCT<br>15968.7 1920.0 1795.4 3 0.038 0 0.000 0.038<br>8.2.8 内存溢出和优化<br>内存不够用主要分为两个方面：堆和非堆<br>所以这时候就要去手动设置堆或者非堆的大小，然后程序中不停使用相对应的区域，等待内存溢出。<br>关键是内存溢出之后，怎么得到溢出信息进行分析，有两种做法<br>参数设置自动<br>-XX:+HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=./<br>jmap手动<br>查看当前进程id PID<br>jmap -dump:format=b,file=heap.hprof PID<br>jmap -heap PID 打印出堆内存相关的信息<br>当内存信息打印出来之后，发现看不懂，怎么办呢？得要有工具帮助我们看这块的信息，比如MAT<br>小结:这块可以适当增加内存的大小，这样防止内存溢出，减少垃圾回收的频率<br>8.2.9 GC调优<br>（1）查看目前JVM使用的垃圾回收器<br>[root@pretty ~]# jinfo -flag UseParallelGC 6925<br>-XX:+UseParallelGC —&gt;发现使用了ParallelGC<br>[root@pretty ~]# jinfo -flag UseG1GC 6925<br>-XX:-UseG1GC —&gt;发现没有使用G1GC<br>（2）将垃圾回收器修改为G1<br>-XX:+UseG1GC<br>[root@pretty ~]# jinfo -flag UseG1GC 7158<br>-XX:+UseG1GC<br>（3）打印出日志详情信息和日志输出目录文件<br>PrintGCDetails:打印日志详情信息<br>PrintGCTimeStamps:输出GC的时间戳(以基准时间的形式)<br>（4）将日志用工具来分析，看相应的参数<br>8.2.10 JVM调优小结<br>内存大小设置——&gt;dump出日志 使用MAT工具分析<br>垃圾收集器选择———&gt;dump出GC日志 gceasy或者GCViewer<br>8.3 其他优化<br>Connector<br>配置压缩属性compression=”500”，文件大于500bytes才会压缩<br>数据库优化<br>减少对数据库访问等待的时间，可以从数据库的层面进行优化，或者加缓存等等各种方案。<br>开启浏览器缓存，nginx静态资源部署<br>9 嵌入式Tomcat主类寻找<br>9.1 maven<br>寻找:Tomcat7RunnerCli类，寻找main函数<br>9.2 springboot<br>org.springframework.boot.context.embedded.tomcat.EmbeddedServletContainerCustomizer<br>-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -<br>Xloggc:$CATALINA_HOME/logs/g1gc.log</value></name></name></executor></p>
+<p><dependency></dependency></p>
+<p><groupid>org.apache.tomcat.maven</groupid></p>
+<p><artifactid>tomcat7-maven-plugin</artifactid></p>
+<p><version>2.0</version><br><br>// 相当于 new TomcatContextCustomizer(){}<br>factory.addContextCustomizers((context) -&gt; { // Lambda<br>if (context instanceof StandardContext) {<br>StandardContext standardContext = (StandardContext) context;<br>// standardContext.setDefaultWebXml(); // 设置<br>}<br>});</p>
+
+    </div>
+    <p class="post-meta">
+        <span class="post-cat">分类：
+            <a class="cat-link" href="/categories/性能优化/">性能优化</a>
+        </span>
+        <span class="post-tags">
+            标签：
+            
+    
+        <a href="/tags/java/" title="java">java</a> / 
+    
+        <a href="/tags/Tomcat/" title="Tomcat">Tomcat</a>
+    
+
+        </span>
+    </p>
+</article>
+<!-- 分享按钮 -->
+
+  <div class="article-share clearfix text-center">
+    <div class="share-area">
+      <span class="share-txt">分享到：</span>
+      <a href="javascript: window.open('http://service.weibo.com/share/share.php?url=' + encodeURIComponent(location.href) + '&title=' + document.title + '&language=zh_cn');" class="share-icon weibo"></a>
+      <a href="javascript: alert('请复制链接到微信并发送');" class="share-icon wechat"></a>
+      <a href="javascript: window.open('http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(location.href) + '&title=' + document.title);" class="share-icon qqzone"></a>
+      <a href="javascript: window.open('http://connect.qq.com/widget/shareqq/index.html?url=' + encodeURIComponent(location.href) + '&desc=Jelon个人博客&title=' + document.title + '&callback=' + encodeURIComponent(location.href));" class="share-icon qq"></a>
+      <a href="javascript: window.open('http://shuo.douban.com/!service/share?href=' + encodeURIComponent(location.href) + '&name=' + document.title + '&text=' + document.title);" class="share-icon douban"></a>
+    </div>
+  </div>
+
+
+<!-- 上一篇/下一篇 -->
+
+<div class="article-nav clearfix">
+    
+    <span class="prev fl">
+        上一篇<br >
+        <a href="javascript: void(0);">没有上一篇了</a>
+    </span>
+    
+
+    
+    <span class="next fr">
+        下一篇<br >
+        <a href="/2018/12/22/四种引用的理解/">
+            
+                四种引用的理解
+            
+        </a>
+    </span>
+    
+</div>
+
+<!-- 文章评论 -->
+
+  <script src="/js/comment.js"></script>
+  <div id="comments" class="comment">
+    <!--
+    <div class="sign-bar">
+      GitHub 已登录!
+      <span class="sign-link">登出</span>
+    </div>
+    <section class="box">
+      <div class="com-avatar"><img src="/img/jelon.jpg" alt="avatar"></div>
+      <div class="com-text">
+        <div class="main">
+          <textarea class="text-area-edited show" placeholder="欢迎评论！"></textarea>
+          <div class="text-area-preview"></div>
+        </div>
+        <div class="switch">
+          <div class="switch-item on">编辑</div>
+          <div class="switch-item">预览</div>
+        </div>
+        <div class="button">提交</div>
+      </div>
+    </section>
+    <section class="tips">注：评论支持 markdown 语法！</section>
+    <section class="list-wrap">
+      <ul class="list">
+        <li>
+          <div class="user-avatar">
+            <a href="/">
+              <img src="/img/jelon.jpg" alt="user-avatar">
+            </a>
+          </div>
+          <div class="user-comment">
+            <div class="user-comment-header">
+              <span class="post-name">张德龙</span>
+              <span class="post-time">2017年12月12日</span>
+              <span class="like liked">已赞</span>
+              <span class="like-num">2</span>
+            </div>
+            <div class="user-comment-body">333333</div>
+          </div>
+        </li>
+        <li>
+          <div class="user-avatar">
+            <a href="/">
+              <img src="/img/jelon.jpg" alt="user-avatar">
+            </a>
+          </div>
+          <div class="user-comment">
+            <div class="user-comment-header">
+              <span class="post-name">刘德华</span>
+              <span class="post-time">2017年12月12日</span>
+              <span class="like">点赞</span>
+              <span class="like-num">2</span>
+            </div>
+            <div class="user-comment-body">vvvvv</div>
+          </div>
+        </li>
+      </ul>
+      <div class="page-nav">
+        <a href="javascript: void(0);" class="item">1</a>
+        <a href="javascript: void(0);" class="item">2</a>
+        <a href="javascript: void(0);" class="item current">3</a>
+      </div>
+    </section>
+    -->
+  </div>
+  <script>
+  JELON.Comment({
+    container: 'comments',
+    label: 'Tomcat性能优化' || '2019/05/11/Tomcat性能优化/',
+    owner: 'itreal',
+    repo: 'blog_comments',
+    clientId: '1ebc041b241fe73c97b4',
+    clientSecret: '6e64112d7cc6cec12037c700b871b064ff3a9955'
+  });
+  </script>
+
+
+            </div>
+
+        </section>
+        <!-- 侧栏部分 -->
+<aside class="sidebar">
+    <section class="widget">
+        <h3 class="widget-hd"><strong>文章分类</strong></h3>
+        <!-- 文章分类 -->
+<ul class="widget-bd">
+    
+    <li>
+        <a href="/categories/微服务/">微服务</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/版本控制/">版本控制</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/中间件/">中间件</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/前端/">前端</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/java/">java</a>
+        <span class="badge">(5)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/nginx/">nginx</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/编程工具/">编程工具</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/github/">github</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/算法/">算法</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/并发编程/">并发编程</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+    <li>
+        <a href="/categories/性能优化/">性能优化</a>
+        <span class="badge">(1)</span>
+    </li>
+    
+</ul>
+    </section>
+
+    
+    <section class="widget">
+        <h3 class="widget-hd"><strong>热门标签</strong></h3>
+        <!-- 文章标签 -->
+<div class="widget-bd tag-wrap">
+  
+    <a class="tag-item" href="/tags/spring/" title="spring">spring (1)</a>
+  
+    <a class="tag-item" href="/tags/consul/" title="consul">consul (1)</a>
+  
+    <a class="tag-item" href="/tags/java/" title="java">java (8)</a>
+  
+    <a class="tag-item" href="/tags/微服务/" title="微服务">微服务 (1)</a>
+  
+    <a class="tag-item" href="/tags/git/" title="git">git (1)</a>
+  
+    <a class="tag-item" href="/tags/版本控制/" title="版本控制">版本控制 (1)</a>
+  
+    <a class="tag-item" href="/tags/RabbitMQ/" title="RabbitMQ">RabbitMQ (1)</a>
+  
+    <a class="tag-item" href="/tags/linux/" title="linux">linux (1)</a>
+  
+    <a class="tag-item" href="/tags/消息队列/" title="消息队列">消息队列 (1)</a>
+  
+    <a class="tag-item" href="/tags/bootstrap-table/" title="bootstrap-table">bootstrap-table (1)</a>
+  
+    <a class="tag-item" href="/tags/js/" title="js">js (1)</a>
+  
+    <a class="tag-item" href="/tags/hibernate/" title="hibernate">hibernate (1)</a>
+  
+    <a class="tag-item" href="/tags/图片服务器/" title="图片服务器">图片服务器 (1)</a>
+  
+    <a class="tag-item" href="/tags/nginx/" title="nginx">nginx (1)</a>
+  
+    <a class="tag-item" href="/tags/IntelliJ-idea/" title="IntelliJ idea">IntelliJ idea (1)</a>
+  
+    <a class="tag-item" href="/tags/jetbrains/" title="jetbrains">jetbrains (1)</a>
+  
+    <a class="tag-item" href="/tags/annotation/" title="annotation">annotation (1)</a>
+  
+    <a class="tag-item" href="/tags/hexo/" title="hexo">hexo (1)</a>
+  
+    <a class="tag-item" href="/tags/博客/" title="博客">博客 (1)</a>
+  
+    <a class="tag-item" href="/tags/排序/" title="排序">排序 (1)</a>
+  
+    <a class="tag-item" href="/tags/算法/" title="算法">算法 (1)</a>
+  
+    <a class="tag-item" href="/tags/多线程/" title="多线程">多线程 (1)</a>
+  
+    <a class="tag-item" href="/tags/String/" title="String">String (1)</a>
+  
+    <a class="tag-item" href="/tags/Optional/" title="Optional">Optional (1)</a>
+  
+    <a class="tag-item" href="/tags/并发编程/" title="并发编程">并发编程 (1)</a>
+  
+    <a class="tag-item" href="/tags/数据结构/" title="数据结构">数据结构 (1)</a>
+  
+    <a class="tag-item" href="/tags/Tomcat/" title="Tomcat">Tomcat (1)</a>
+  
+</div>
+    </section>
+    
+
+    
+
+    
+    <!-- 友情链接 -->
+    <section class="widget">
+        <h3 class="widget-hd"><strong>友情链接</strong></h3>
+        <!-- 文章分类 -->
+<ul class="widget-bd">
+    
+        <li>
+            <a href="http://blog.sina.com.cn/u/1825875765" target="_blank" title="网络安全博客">Haoren博客</a>
+        </li>
+    
+        <li>
+            <a href="http://blog.csdn.net/yeweiouyang" target="_blank" title="技术博客">Maxwell博客</a>
+        </li>
+    
+        <li>
+            <a href="http://xuanzh.cc/" target="_blank" title="技术博客">朱旋个人博客</a>
+        </li>
+    
+</ul>
+    </section>
+    
+</aside>
+<!-- / 侧栏部分 -->
+    </div>
+
+    <!-- 博客底部 -->
+    <footer class="footer">
+    &copy;
+    
+        2016-2019
+    
+
+    <a href="/">Whd-mtt Loves You</a>
+</footer>
+<div class="back-to-top" id="JELON__backToTop" title="返回顶部">返回顶部</div>
+
+    <!--博客js脚本 -->
+    <!-- 这里放网站js脚本 -->
+<script src="/js/main.js"></script>
+</body>
+</html>
