@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8" >
     <meta name="baidu-site-verification" content="dIcXMeY8Ya" />
     
-    <title>Hibernate中get()和load()的区别 | itratel&#39;s blogs</title>
+    <title>mysql索引使用和优化 | itratel&#39;s blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" >
     <meta name="keywords" content="itratel, javaweb, 大数据," >
     <meta name="description" content="itratel个人前端小站" >
@@ -56,19 +56,19 @@
         <div class="dropnav icon-paragraph-justify" id="JELON__btnDropNav"></div>
         <ul class="menu hidden" id="JELON__menu">
             
-            <li rel="/2018/06/03/Hibernate中get()和load()的区别/index.html" class="item ">
+            <li rel="/2019/05/11/Mysql索引使用和优化/index.html" class="item ">
                 <a href="/" title="首页" class="icon-home">&nbsp;首页</a>
             </li>
             
-            <li rel="/2018/06/03/Hibernate中get()和load()的区别/index.html" class="item ">
+            <li rel="/2019/05/11/Mysql索引使用和优化/index.html" class="item ">
                 <a href="/lab/" title="实验室" class="icon-lab">&nbsp;实验室</a>
             </li>
             
-            <li rel="/2018/06/03/Hibernate中get()和load()的区别/index.html" class="item ">
+            <li rel="/2019/05/11/Mysql索引使用和优化/index.html" class="item ">
                 <a href="/about/" title="关于" class="icon-about">&nbsp;关于</a>
             </li>
             
-            <li rel="/2018/06/03/Hibernate中get()和load()的区别/index.html" class="item ">
+            <li rel="/2019/05/11/Mysql索引使用和优化/index.html" class="item ">
                 <a href="/comment/" title="留言" class="icon-comment">&nbsp;留言</a>
             </li>
             
@@ -119,55 +119,51 @@
 <!-- 文章 -->
 <article class="post article">
     <header class="text-center">
-        <h3 class="post-title"><span>Hibernate中get()和load()的区别</span></h3>
+        <h3 class="post-title"><span>mysql索引使用和优化</span></h3>
     </header>
     <p class="post-meta text-center">
         whd-mtt 发表于
-        <time datetime="2018-06-03T11:25:50.000Z">2018-06-03</time>
+        <time datetime="2019-05-11T02:06:18.000Z">2019-05-11</time>
     </p>
     <div class="post-content">
-        <p>最近面试中遇到了关于hibernate中get()和load()两个方法的区别,我在论坛看到了各种论述，我总结了他们的观点以及自己的理解来简单说明下，如果有哪里不对的地方欢迎指正。</p>
-<a id="more"></a>
-<h2 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h2><p>首先要清楚一点的是get()和load()方法都是hibernate中session中获取实体对象两个方法,如果是get()方法加载实体对象，但是如果加载对象失败的话，那么结果会返回为null，而通过load()方式加载实体对象，加载不到的数据话便会抛出ObjectNotFoundException。</p>
-<hr>
-<h2 id="执行机制"><a href="#执行机制" class="headerlink" title="执行机制"></a>执行机制</h2><h3 id="get-方法"><a href="#get-方法" class="headerlink" title="get( )方法"></a>get( )方法</h3><p>对于get( )方法，hibernate会确认一下该id对应的数据是否存在，首先会在session一级缓存中查找，如果在session缓存中找到了该id对应的对象；</p>
+        <h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><h3 id="常用规则"><a href="#常用规则" class="headerlink" title="常用规则"></a>常用规则</h3><p>1、表的主键、外键必须有索引；<br>2、数据量超过300的表应该有索引；<br><a id="more"></a><br>3、经常与其他表进行连接的表，在连接字段上应该建立索引；<br>4、经常出现在Where子句中的字段，特别是大表的字段，应该建立索引；<br>5、索引应该建在选择性高的字段上；<br>6、索引应该建在小字段上，对于大的文本字段甚至超长字段，不要建索引；<br>7、复合索引的建立需要进行仔细分析；尽量考虑用单字段索引代替： </p>
 <ul>
-<li><p>如果刚好该对象前面是被代理过的，如被load方法使用过，或者被其他关联对象延迟加载过，那么返回的还是原先的代理对象，而不是实体类对象;</p>
-</li>
-<li><p>如果该代理对象还没有加载实体数据（就是id以外的其他属性数据），那么它会查询二级缓存或者数据库来加载数据，但是返回的还是代理对象，只不过已经加载了实体数据;</p>
-</li>
-<li>如果该id对应的对象并且不是被延迟加载的代理对象，或者在session缓存中没有找到该对象，则查找二级缓存</li>
+<li>正确选择复合索引中的主列字段，一般是选择性较好的字段； </li>
+<li>复合索引的几个字段是否经常同时以AND方式出现在Where子句中？单字段查询是否  极少甚至没有？如果是，则可以建立复合索引；否则考虑单字段索引； </li>
+<li>如果复合索引中包含的字段经常单独出现在Where子句中，则分解为多个单字段索引； </li>
+<li>如果复合索引所包含的字段超过3个，那么仔细考虑其必要性，考虑减少复合的字段； </li>
+<li>如果既有单字段索引，又有这几个字段上的复合索引，一般可以删除复合索引；<br>8、频繁进行数据操作的表，不要建立太多的索引；<br>9、删除无用的索引，避免对执行计划造成负面影响； </li>
 </ul>
-<p>如果二级缓存中没有的话，就会直接发送sql语句去数据库查询数据返回实体对象，如果数据库中也没有就返回null。</p>
-<h3 id="load-方法"><a href="#load-方法" class="headerlink" title="load()方法"></a>load()方法</h3><p>对于load方法加载实体对象的时，会根据*.hbm.xml映射文件上类级别的lazy属性的配置(默认为true)选择加载方式；</p>
-<ul>
-<li><p>若为true,则首先在Session缓存中查找，看看该id对应的对象是否存在，不存在则延迟加载，返回实体的代理类对象(该代理类为实体类的子类，由CGLIB动态生成)，这个代理对象只保存了实体对象的id值，当我们使用该对象的其他属性值时就会查找二级缓存，二级缓存没有就发出sql语句去数据库查找数据，如果数据库仍没发现符合条件的记录，则会抛出一个ObjectNotFoundException。这也是我们时常所说的<strong>延迟加载 </strong></p>
-</li>
-<li><p>若为false，就跟get( )方法加载顺序一样，只是最终若没发现符合条件的记录，则会抛出一个ObjectNotFoundException;</p>
-</li>
-</ul>
-<hr>
-<h2 id="使用get-和load-时的注意事项"><a href="#使用get-和load-时的注意事项" class="headerlink" title="使用get( )和load( )时的注意事项"></a>使用get( )和load( )时的注意事项</h2><p>当我们了解了load和get的加载机制以后，在以后使用过程后需要注意一些问题：</p>
-<ul>
-<li><p>如果使用get方式来加载对象，当我们试图得到一个id不存在的对象时，此时会报NullPointException,这是因为通过get( )方式加载实体对象时候，我们会去数据库中查询出该对象，但是这个id值不存在，所以此时实体对象是null，也就会报NullPointException。</p>
-</li>
-<li><p>如果使用load方式来加载对象，当我们试图得到一个id不存在的实体对象时，此时会报ObjectNotFoundException，为什么使用load的方式和get的方式来得到一个不存在的对象报的异常不同呢？？其原因还是因为load的延迟加载机制，使用load()时，此时的实体对象是一个代理对象，仅仅保存了当前的这个id值，当我们试图得到该对象的其他属性时，这个属性其实是为空，所以就会报ObjectNotFoundException</p>
-</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总之对于get( )和load( )的根本区别，一句话，hibernate对于load方法认为该数据在数据库中一定存在，可以放心的使用代理来延迟加载，如果在使用过程中发现了问题，只能抛异常；而对于get( )方法，hibernate一定要获取到真实的数据，否则返回null。</p>
+<p>以上是一些普遍的建立索引时的判断依据。索引的建立必须慎重，对每个索引的必要性都应该经过仔细分析，要有建立的依据。</p>
+<p> 因为太多的索引与不充分、不正确的索引对性能都毫无益处：在表上建立的每个索引都会增加存储开销，索引对于插入、删除、更新操作也会增加处理上的开销。 另外，过多的复合索引，在有单字段索引的情况下，一般都是没有存在价值的；相反，还会降低数据增加删除时的性能，特别是对频繁更新的表来说，负面影响更大。 </p>
+<p>总的来说，小型表肯定不建索引，或者数据库记录在亿条数据级以上，还是建议使用非关系型数据库。 还有些特殊字段的数据库，比如BLOB，CLOB字段肯定也不适合建索引。</p>
+<h3 id="对千万级MySQL数据库建立索引的事项及提高性能的手段"><a href="#对千万级MySQL数据库建立索引的事项及提高性能的手段" class="headerlink" title="对千万级MySQL数据库建立索引的事项及提高性能的手段"></a>对千万级MySQL数据库建立索引的事项及提高性能的手段</h3><h4 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h4><p>首先，应当考虑表空间和磁盘空间是否足够。我们知道索引也是一种数据，在建立索引的时候势必也会占用大量表空间。因此在对一大表建立索引的时候首先应当考虑的是空间容量问题。<br>其次，在对建立索引的时候要对表进行加锁，因此应当注意操作在业务空闲的时候进行。</p>
+<h4 id="性能调整方面"><a href="#性能调整方面" class="headerlink" title="性能调整方面"></a>性能调整方面</h4><p>首当其冲的考虑因素便是磁盘I/O。物理上，应当尽量把索引与数据分散到不同的磁盘上（不考虑阵列的情况）。逻辑上，数据表空间与索引表空间分开。这是在建索引时应当遵守的基本准则。<br>其次，我们知道，在建立索引的时候要对表进行全表的扫描工作，因此，应当考虑调大初始化参数db_file_multiblock_read_count的值。一般设置为32或更大。</p>
+<p>再次，建立索引除了要进行全表扫描外同时还要对数据进行大量的排序操作，因此，应当调整排序区的大小。<br>    9i之前，可以在session级别上加大sort_area_size的大小，比如设置为100m或者更大。<br>    9i以后，如果初始化参数workarea_size_policy的值为TRUE，则排序区从pga_aggregate_target里自动分配获得。<br>最后，建立索引的时候，可以加上nologging选项。以减少在建立索引过程中产生的大量redo，从而提高执行的速度。</p>
+<h3 id="MySql在建立索引优化时需要注意的问题"><a href="#MySql在建立索引优化时需要注意的问题" class="headerlink" title="MySql在建立索引优化时需要注意的问题"></a>MySql在建立索引优化时需要注意的问题</h3><p>设计好MySql的索引可以让你的数据库飞起来，大大的提高数据库效率。设计MySql索引的时候有一下几点注意：</p>
+<h4 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h4><p>对于查询占主要的应用来说，索引显得尤为重要。很多时候性能问题很简单的就是因为我们忘了添加索引而造成的，或者说没有添加更为有效的索引导致。如果不加索引的话，那么查找任何哪怕只是一条特定的数据都会进行一次全表扫描，如果一张表的数据量很大而符合条件的结果又很少，那么不加索引会引起致命的性能下降。但是也不是什么情况都非得建索引不可，比如性别可能就只有两个值，建索引不仅没什么优势，还会影响到更新速度，这被称为过度索引。</p>
+<h4 id="复合索引"><a href="#复合索引" class="headerlink" title="复合索引"></a>复合索引</h4><p>比如有一条语句是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from users where area=’beijing’ and age=22;</span><br></pre></td></tr></table></figure></p>
+<p>如果我们是在area和age上分别创建单个索引的话，由于mysql查询每次只能使用一个索引，所以虽然这样已经相对不做索引时全表扫描提高了很多效率，但是如果在area、age两列上创建复合索引的话将带来更高的效率。如果我们创建了(area, age,salary)的复合索引，那么其实相当于创建了(area,age,salary)、(area,age)、(area)三个索引，这被称为最佳左前缀特性。因此我们在创建复合索引时应该将最常用作限制条件的列放在最左边，依次递减。</p>
+<h4 id="索引不会包含有NULL值的列"><a href="#索引不会包含有NULL值的列" class="headerlink" title="索引不会包含有NULL值的列"></a>索引不会包含有NULL值的列</h4><p>只要列中包含有NULL值都将不会被包含在索引中，复合索引中只要有一列含有NULL值，那么这一列对于此复合索引就是无效的。所以我们在数据库设计时不要让字段的默认值为NULL。</p>
+<h4 id="使用短索引"><a href="#使用短索引" class="headerlink" title="使用短索引"></a>使用短索引</h4><p>对串列进行索引，如果可能应该指定一个前缀长度。例如，如果有一个CHAR(255)的 列，如果在前10 个或20 个字符内，多数值是惟一的，那么就不要对整个列进行索引。短索引不仅可以提高查询速度而且可以节省磁盘空间和I/O操作。</p>
+<h4 id="排序的索引问题"><a href="#排序的索引问题" class="headerlink" title="排序的索引问题"></a>排序的索引问题</h4><p>mysql查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。因此数据库默认排序可以符合要求的情况下不要使用排序操作；尽量不要包含多个列的排序，如果需要最好给这些列创建复合索引。</p>
+<h4 id="like语句操作"><a href="#like语句操作" class="headerlink" title="like语句操作"></a>like语句操作</h4><p>一般情况下不鼓励使用like操作，如果非使用不可，如何使用也是一个问题。like “%a%” 不会使用索引而like “aaa%”可以使用索引。</p>
+<h4 id="不要在列上进行运算"><a href="#不要在列上进行运算" class="headerlink" title="不要在列上进行运算"></a>不要在列上进行运算</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from users where YEAR(adddate)</span><br></pre></td></tr></table></figure>
+<h4 id="不使用NOT-IN和操作"><a href="#不使用NOT-IN和操作" class="headerlink" title="不使用NOT IN和操作"></a>不使用NOT IN和操作</h4><p>NOT IN和操作都不会使用索引将进行全表扫描。NOT IN可以NOT EXISTS代替，id3则可使用id&gt;3 or id</p>
+<h2 id="参考阅读"><a href="#参考阅读" class="headerlink" title="参考阅读"></a>参考阅读</h2><p><a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="noopener">MySQL索引背后的数据结构及算法原理</a></p>
 
     </div>
     <p class="post-meta">
         <span class="post-cat">分类：
-            <a class="cat-link" href="/categories/java/">java</a>
+            <a class="cat-link" href="/categories/Mysql/">Mysql</a>
         </span>
         <span class="post-tags">
             标签：
             
     
-        <a href="/tags/java/" title="java">java</a> / 
+        <a href="/tags/Mysql/" title="Mysql">Mysql</a> / 
     
-        <a href="/tags/hibernate/" title="hibernate">hibernate</a>
+        <a href="/tags/索引/" title="索引">索引</a>
     
 
         </span>
@@ -193,20 +189,16 @@
     
     <span class="prev fl">
         上一篇<br >
-        <a href="/2018/06/03/hello-world/">
-            
-                Hello World
-            
-        </a>
+        <a href="javascript: void(0);">没有上一篇了</a>
     </span>
     
 
     
     <span class="next fr">
         下一篇<br >
-        <a href="/2018/06/02/Git右键没有Git-Bash-Here的解决办法/">
+        <a href="/2019/05/11/Tomcat性能优化/">
             
-                Git右键没有Git Bash Here的解决办法
+                Tomcat性能优化
             
         </a>
     </span>
@@ -283,7 +275,7 @@
   <script>
   JELON.Comment({
     container: 'comments',
-    label: 'Hibernate中get()和load()的区别' || '2018/06/03/Hibernate中get()和load()的区别/',
+    label: 'Mysql索引使用和优化' || '2019/05/11/Mysql索引使用和优化/',
     owner: 'itreal',
     repo: 'blog_comments',
     clientId: '1ebc041b241fe73c97b4',
